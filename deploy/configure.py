@@ -21,6 +21,7 @@ config.update({
     'MONGODB_POOL_SIZE': '5', 'MONGODB_MIN_POOL_SIZE': '1',
     'SESSION_SECRET': secrets.token_hex(32), 'SESSION_SECRET_KEY': secrets.token_hex(32),
     'ENABLE_CONSOLE_LOGS_IN_PROD': 'true', 'DISABLE_EMAILS': 'true',
+    'DISABLE_LOCAL_ANALYTICS': True,
     'LOGGLY_TOKEN': '', 'LOGGLY_SUBDOMAIN': '', 'LOGGLY_CLIENT_TOKEN': '',
     'SLACK_URL': '', 'SLACK_FLAGGING_URL': '', 'SLACK_SUBSCRIPTIONS_URL': '',
     'GOOGLE_CLIENT_ID': '', 'GOOGLE_CLIENT_SECRET': '', 'FACEBOOK_KEY': '',
