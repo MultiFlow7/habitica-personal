@@ -31,7 +31,7 @@ try {
   });
   uid = user._id;
   const login = await api('POST', '/user/auth/local/login', { username, password });
-  assert.equal(login._id, uid);
+  assert.equal(login.id, uid);
   headers['x-api-user'] = uid;
   headers['x-api-key'] = login.apiToken;
   const before = (await api('GET', '/user')).stats;
