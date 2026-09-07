@@ -11,7 +11,7 @@
 ./ops tunnel
 ./habitica status
 ./habitica auth login --username YOUR_USERNAME
-./habitica user get
+./habitica user stats
 ```
 
 登录命令在终端隐式输入密码，只保存 API Token，不保存密码。使用个人实例账号，官方账号不互通。
@@ -70,7 +70,8 @@ CLI 不跟随 HTTP 重定向，防止凭据意外转发。
 | 130 | 用户中断 |
 
 `./habitica schema` 输出机器可读命令、参数、退出码和副作用说明。无需登录或网络。
-`user get` 保留状态与游戏数据，递归遮盖 API Token、密码哈希等凭据。
+`user stats` 仅返回角色 ID、昵称和游戏数值，适合 Agent 日常查询。
+`user get` 返回完整状态与游戏数据，递归遮盖 API Token、密码哈希等凭据。
 任务正文、备注等仍是用户私密内容：仅在本机返回给调用者，不应发布到 GitHub、日志服务或公共对话。
 
 ## 任务操作

@@ -45,6 +45,8 @@ def main():
             assert run('auth', 'status')['configured']
             user = run('user', 'get')
             assert user['_id'] == user_id and user.get('apiToken') in (None, '[REDACTED]')
+            compact = run('user', 'stats')
+            assert compact['id'] == user_id and set(compact) == {'id', 'name', 'stats'}
             tag = run('tags', 'create', '--name', 'CLI tag')
             tag_id = tag.get('id') or tag['_id']
             run('tags', 'update', tag_id, '--name', 'CLI renamed')

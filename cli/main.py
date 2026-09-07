@@ -204,7 +204,9 @@ def build_parser():
     token.add_argument('--token-stdin', action='store_true')
     auth.add_parser('status', help='Local credential status, without token')
     auth.add_parser('logout', help='Remove local credentials only')
-    commands.add_parser('user').add_subparsers(dest='action', required=True).add_parser('get')
+    user = commands.add_parser('user').add_subparsers(dest='action', required=True)
+    user.add_parser('get', help='Full account data with credentials redacted')
+    user.add_parser('stats', help='Compact character identity and game statistics')
     tasks = commands.add_parser('tasks').add_subparsers(dest='action', required=True)
     listing = tasks.add_parser('list')
     listing.add_argument('--type', choices=TASK_TYPES + ['completedTodos'])
@@ -351,7 +353,11 @@ def execute(args, parser, secrets):
         save_config(path, {'url': url, 'user_id': user_id, 'api_token': token})
         return {'authenticated': True, 'url': url, 'user_id': user_id, 'credential_file': str(path)}
     if args.command == 'user':
-        return client.call('GET', '/user')
+        data = client.call('GET', '/user')
+        if args.action == 'stats':
+            return {'id': data.get('_id') or data.get('id'), 'name': data.get('profile', {}).get('name'),
+                    'stats': data.get('stats', {})}
+        return data
     if args.command == 'tasks':
         action = args.action
         if action == 'list':

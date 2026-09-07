@@ -140,6 +140,9 @@ class CliTests(unittest.TestCase):
         self.assertEqual(code, 0)
         self.assertEqual(result['data']['auth']['local']['hashed_password'], '[REDACTED]')
         self.assertEqual(result['data']['stats']['gp'], 12)
+        _, compact = self.invoke('user', 'stats')
+        self.assertEqual(set(compact['data']), {'id', 'name', 'stats'})
+        self.assertEqual(compact['data']['stats']['gp'], 12)
 
     def test_task_type_mapping_and_local_filter(self):
         self.configured()
