@@ -2,6 +2,8 @@
 
 This repository maintains a personal Habitica deployment. See [operations and upgrade guide](docs/OPERATIONS.md) and [personal changelog](CHANGELOG.personal.md). The upstream README follows.
 
+Agent CLI: run `./habitica schema` or see the [CLI guide](docs/CLI.md). Python 3.9+, no third-party dependencies.
+
 ## Public pull request submissions paused as of August 4, 2026
 
 Due to changes in the tech landscape and in how our player base interacts with Habitica on various platforms, we have made the decision to pause our acceptance of code-based contributions (Blacksmith tiers). Our codebase will remain open-source and publicly visible. If you’d like to know more about this pause, you can find additional details [on the GitHub wiki](https://github.com/HabitRPG/habitica/wiki/Contributing-to-Habitica#pause-on-community-pull-requests).

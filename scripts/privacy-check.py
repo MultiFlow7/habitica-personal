@@ -13,7 +13,7 @@ RULES = {
     'AWS access key': re.compile(rb'AKIA[0-9A-Z]{16}'),
     'Slack token': re.compile(rb'xox[baprs]-[A-Za-z0-9-]{20,}'),
     'database credentials': re.compile(rb'(?:mongodb(?:\+srv)?|postgres(?:ql)?|redis)://[^\s/\"\x27:]+:[^\s/@\"\x27]+@'),
-    'Habitica API token': re.compile(rb'[\"\x27]apiToken[\"\x27]\s*:\s*[\"\x27][0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}[\"\x27]'),
+    'Habitica API token': re.compile(rb'[\"\x27]api_?token[\"\x27]\s*:\s*[\"\x27][0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}[\"\x27]', re.IGNORECASE),
     'stored password hash': re.compile(rb'\$2[aby]\$[0-9]{2}\$[./A-Za-z0-9]{53}'),
 }
 

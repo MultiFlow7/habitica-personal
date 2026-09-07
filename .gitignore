@@ -80,3 +80,6 @@ secrets/
 *.archive.gz
 *.sql
 *.sql.gz
+credentials.json
+__pycache__/
+*.pyc
