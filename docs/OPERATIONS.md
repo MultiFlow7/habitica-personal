@@ -94,9 +94,10 @@ gh run list --workflow personal-release.yml
 ./ops logs
 ./ops backup
 ./ops tunnel
+./ops close-tunnel
 ```
 
-隧道运行期间访问 http://127.0.0.1:8317 ，关闭该终端即断开隧道。
+隧道运行期间访问 http://127.0.0.1:8317 。隧道在后台运行，通过 `./ops close-tunnel` 关闭。
 后续可独立配置 HTTPS 域名和反向代理；无需修改现有网站的入口。
 
 如需本机完整调试环境：`./dev install`，然后 `./dev start`；结束后 `./dev stop`。

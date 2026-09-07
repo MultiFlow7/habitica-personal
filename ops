@@ -19,8 +19,17 @@ remote = config.get('directory', '/srv/habitica-personal')
 ssh = ['ssh', '-o', 'BatchMode=yes', '-o', 'StrictHostKeyChecking=yes', '-i', key]
 action = sys.argv[1] if len(sys.argv) > 1 else 'status'
 if action == 'tunnel':
-    os.execvp('ssh', ssh + ['-o', 'ExitOnForwardFailure=yes', '-o', 'ServerAliveInterval=30',
-                           '-N', '-L', '127.0.0.1:8317:127.0.0.1:8317', host])
+    socket = ROOT / 'work' / 'tunnel.sock'
+    socket.parent.mkdir(exist_ok=True)
+    control = ssh + ['-S', str(socket)]
+    running = subprocess.run(control + ['-O', 'check', host], capture_output=True).returncode == 0
+    if not running:
+        subprocess.run(control + ['-M', '-f', '-o', 'ExitOnForwardFailure=yes',
+                                  '-o', 'ServerAliveInterval=30', '-o', 'ServerAliveCountMax=3',
+                                  '-N', '-L', '127.0.0.1:8317:127.0.0.1:8317', host], check=True)
+    print('Server access tunnel ready: http://127.0.0.1:8317')
+elif action == 'close-tunnel':
+    subprocess.run(ssh + ['-S', str(ROOT / 'work' / 'tunnel.sock'), '-O', 'exit', host], check=True)
 elif action in ['status', 'backup', 'logs']:
     command = f'cd {shlex.quote(remote)} && ./manage.sh {action}'
     raise SystemExit(subprocess.call(ssh + [host, command]))
@@ -50,4 +59,4 @@ elif action == 'rollback':
         raise SystemExit('Usage: ./ops rollback FULL_COMMIT_SHA')
     subprocess.run(ssh + [host, f'cd {shlex.quote(remote)} && ./manage.sh rollback {sys.argv[2]}'], check=True)
 else:
-    raise SystemExit('Usage: ./ops status|backup|logs|tunnel|deploy RUN_ID|rollback COMMIT_SHA')
+    raise SystemExit('Usage: ./ops status|backup|logs|tunnel|close-tunnel|deploy RUN_ID|rollback COMMIT_SHA')
