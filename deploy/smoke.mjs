@@ -5,7 +5,8 @@ import mongoose from 'mongoose';
 
 const base = process.env.SMOKE_URL || 'http://127.0.0.1:3000';
 const headers = { 'content-type': 'application/json', 'x-client': 'habitica-personal-smoke' };
-const username = `smoke_${randomBytes(8).toString('hex')}`;
+// Habitica usernames are limited to 20 characters.
+const username = `smk_${randomBytes(8).toString('hex')}`;
 const password = randomBytes(24).toString('base64url');
 let uid;
 async function api(method, path, body) {
