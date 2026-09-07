@@ -24,6 +24,8 @@ jobs:
         run: |
           python3 scripts/test-privacy-check.py
           python3 scripts/privacy-check.py --history
+      - name: Test agent CLI transport and privacy
+        run: python3 cli/test_cli.py
       - name: Build and run shared game tests
         run: docker build --build-arg REVISION="$GITHUB_SHA" -f deploy/Dockerfile -t "habitica-personal:$GITHUB_SHA" .
       - name: Start isolated production fixture
@@ -34,6 +36,8 @@ jobs:
           docker compose -f deploy/compose.yml up -d --wait --wait-timeout 240
       - name: Verify application and database
         run: docker compose -f deploy/compose.yml exec -T app node deploy/smoke.mjs
+      - name: Verify agent CLI against isolated API
+        run: python3 cli/test_live.py
       - name: Export fixed release artifact
         if: github.event_name != 'pull_request'
         run: |

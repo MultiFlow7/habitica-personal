@@ -31,3 +31,6 @@ i18n_cache
 **/*.sql*
 release
 releases
+**/credentials.json
+**/__pycache__
+**/*.pyc
