@@ -1,0 +1,53 @@
+#!/usr/bin/env python3
+"""Remote operations; connection settings stay in .habitica-server.json."""
+import json
+import os
+from pathlib import Path
+import shlex
+import subprocess
+import sys
+
+ROOT = Path(__file__).resolve().parent
+os.chdir(ROOT)
+config_path = ROOT / '.habitica-server.json'
+if not config_path.exists():
+    raise SystemExit('Create .habitica-server.json following docs/OPERATIONS.md.')
+config = json.loads(config_path.read_text())
+host = config['host']
+key = str(Path(config['identity']).expanduser())
+remote = config.get('directory', '/srv/habitica-personal')
+ssh = ['ssh', '-o', 'BatchMode=yes', '-o', 'StrictHostKeyChecking=yes', '-i', key]
+action = sys.argv[1] if len(sys.argv) > 1 else 'status'
+if action == 'tunnel':
+    os.execvp('ssh', ssh + ['-o', 'ExitOnForwardFailure=yes', '-o', 'ServerAliveInterval=30',
+                           '-N', '-L', '127.0.0.1:8317:127.0.0.1:8317', host])
+elif action in ['status', 'backup', 'logs']:
+    command = f'cd {shlex.quote(remote)} && ./manage.sh {action}'
+    raise SystemExit(subprocess.call(ssh + [host, command]))
+elif action == 'deploy':
+    if len(sys.argv) != 3:
+        raise SystemExit('Usage: ./ops deploy GITHUB_RUN_ID')
+    run_id = sys.argv[2]
+    result = subprocess.check_output(['gh', 'run', 'view', run_id, '--repo', 'MultiFlow7/habitica-personal',
+                                      '--json', 'conclusion,headSha,workflowName,event'])
+    run = json.loads(result)
+    if run['conclusion'] != 'success' or run['workflowName'] != 'Personal release' or run['event'] == 'pull_request':
+        raise SystemExit('Only a successful Personal release build can be deployed.')
+    sha = run['headSha']
+    destination = ROOT / 'work' / 'releases' / sha
+    if not destination.exists():
+        subprocess.run(['gh', 'run', 'download', run_id, '--repo', 'MultiFlow7/habitica-personal',
+                        '-n', 'habitica-release-' + sha, '-D', str(destination)], check=True)
+    release_dir = remote + '/releases/' + sha
+    subprocess.run(ssh + [host, 'mkdir -p ' + shlex.quote(release_dir)], check=True)
+    subprocess.run(['scp', '-q', '-o', 'BatchMode=yes', '-o', 'StrictHostKeyChecking=yes', '-i', key]
+                   + [str(p) for p in destination.iterdir() if p.is_file()]
+                   + [host + ':' + release_dir + '/'], check=True)
+    command = f'cd {shlex.quote(remote)} && ./manage.sh deploy {shlex.quote(sha)}'
+    subprocess.run(ssh + [host, command], check=True)
+elif action == 'rollback':
+    if len(sys.argv) != 3 or len(sys.argv[2]) != 40 or any(c not in '0123456789abcdef' for c in sys.argv[2]):
+        raise SystemExit('Usage: ./ops rollback FULL_COMMIT_SHA')
+    subprocess.run(ssh + [host, f'cd {shlex.quote(remote)} && ./manage.sh rollback {sys.argv[2]}'], check=True)
+else:
+    raise SystemExit('Usage: ./ops status|backup|logs|tunnel|deploy RUN_ID|rollback COMMIT_SHA')

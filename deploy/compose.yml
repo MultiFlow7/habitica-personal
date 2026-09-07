@@ -1,0 +1,51 @@
+name: habitica-personal
+services:
+  app:
+    image: ${HABITICA_IMAGE:?Set a fixed release image in .env}
+    pull_policy: never
+    init: true
+    restart: unless-stopped
+    mem_limit: 768m
+    cpus: 1.0
+    ports:
+      - "127.0.0.1:8317:3000"
+    volumes:
+      - ./config.json:/app/config.json:ro
+    environment:
+      NODE_ENV: production
+      NODE_OPTIONS: --max-old-space-size=512
+    depends_on:
+      mongo:
+        condition: service_healthy
+    healthcheck:
+      test: [CMD, node, -e, "fetch('http://127.0.0.1:3000/api/v3/status').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      start_period: 60s
+      retries: 5
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+  mongo:
+    image: mongo:7.0
+    restart: unless-stopped
+    mem_limit: 512m
+    cpus: 0.5
+    command: [mongod, --bind_ip_all, --replSet, rs, --wiredTigerCacheSizeGB, "0.25"]
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test: [CMD-SHELL, "mongosh --quiet --eval 'try { rs.status() } catch (e) { rs.initiate({_id: \"rs\", members: [{_id: 0, host: \"mongo:27017\"}]}) }; if (!db.hello().isWritablePrimary) quit(1)'"]
+      interval: 30s
+      timeout: 15s
+      start_period: 10s
+      retries: 10
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+volumes:
+  mongo-data:

@@ -1,0 +1,18 @@
+name: habitica-local
+services:
+  mongo:
+    image: mongo:7.0
+    command: [mongod, --bind_ip_all, --replSet, rs]
+    ports:
+      - "127.0.0.1:27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - "mongosh --quiet --eval 'try { rs.status() } catch (e) { rs.initiate({_id: \"rs\", members: [{_id: 0, host: \"localhost:27017\"}]}) }; if (!db.hello().isWritablePrimary) quit(1)'"
+      interval: 5s
+      timeout: 10s
+      retries: 30
+volumes:
+  mongo-data:
