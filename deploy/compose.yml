@@ -29,7 +29,7 @@ services:
         max-size: 10m
         max-file: "3"
   mongo:
-    image: mongo:7.0
+    image: mongo:7.0@sha256:b6421fd6d1c5ded6377b397d8983e2f82e2100dc5123332dcfda2065a472be5b
     restart: unless-stopped
     mem_limit: 512m
     cpus: 0.5
