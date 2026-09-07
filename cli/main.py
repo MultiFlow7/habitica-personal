@@ -1,6 +1,7 @@
 """Habitica CLI, Python 3.9+, standard library only. All data stays local."""
 import argparse
 import getpass
+import http.client
 import ipaddress
 import json
 import math
@@ -161,7 +162,7 @@ class Client:
                     detail['retry_after_seconds'] = int(retry_after)
             message = 'HTTP redirect refused; credentials were not forwarded.' if 300 <= code < 400 else f'Habitica rejected the request (HTTP {code}).'
             raise Failure(kind, message, **detail)
-        except (error.URLError, TimeoutError, socket.timeout, ConnectionError, OSError):
+        except (error.URLError, TimeoutError, socket.timeout, ConnectionError, OSError, http.client.HTTPException):
             raise Failure('network', 'Cannot complete the request. Check the SSH tunnel and service; reconcile writes before retrying.',
                           outcome_unknown=method != 'GET', retryable=False)
         try:

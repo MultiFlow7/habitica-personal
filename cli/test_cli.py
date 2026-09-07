@@ -204,10 +204,11 @@ class CliTests(unittest.TestCase):
 
     def test_network_write_reports_unknown_outcome(self):
         self.configured()
-        with patch.object(cli.request.OpenerDirector, 'open', side_effect=TimeoutError):
-            code, result = self.invoke('tasks', 'score', 'task1', 'up')
-        self.assertEqual(code, 5)
-        self.assertTrue(result['error']['outcome_unknown'])
+        for failure in [TimeoutError(), cli.http.client.IncompleteRead(b'', 100)]:
+            with patch.object(cli.request.OpenerDirector, 'open', side_effect=failure):
+                code, result = self.invoke('tasks', 'score', 'task1', 'up')
+            self.assertEqual(code, 5)
+            self.assertTrue(result['error']['outcome_unknown'])
 
     def test_complete_rejects_habits_without_scoring(self):
         self.configured()
