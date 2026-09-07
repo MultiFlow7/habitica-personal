@@ -65,6 +65,7 @@ export function getGroupUrl (group) {
  * `unsubscribeFromAll` is set to true, if so it won't send the email.
  */
 export async function sendTxn (mailingInfoArray, emailType, variables, personalVariables) {
+  if (nconf.get('DISABLE_EMAILS') === 'true') return null;
   if (!Array.isArray(mailingInfoArray)) {
     mailingInfoArray = [mailingInfoArray]; // eslint-disable-line no-param-reassign
   }

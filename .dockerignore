@@ -1,2 +1,13 @@
 node_modules
 .git
+.habitica-server.json
+**/node_modules
+work
+config.json
+deploy/config.json
+deploy/.env
+website/client/dist
+website/transpiled-babel
+website/common/transpiled-babel
+content_cache
+i18n_cache

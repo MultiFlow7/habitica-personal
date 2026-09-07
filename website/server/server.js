@@ -43,7 +43,7 @@ app.set('port', nconf.get('PORT'));
 attachMiddlewares(app, server);
 
 server.on('request', app);
-server.listen(app.get('port'), () => {
+server.listen(app.get('port'), nconf.get('HOST'), () => {
   logger.info(`Express server listening on port ${app.get('port')}`);
   SERVER_STATUS.EXPRESS = true;
 });

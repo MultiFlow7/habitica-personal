@@ -112,7 +112,7 @@
     "docker:mongo:dev:down": "docker compose -f docker-compose.mongo-only.yml down",
     "docker:mongo:test": "docker compose -f docker-compose.mongo-test-local.yml up",
     "mongo:test": "node scripts/start-local-mongo.mjs --test-db",
-    "postinstall": "git config --global url.\"https://\".insteadOf git:// && gulp build && cd website/client && npm install",
+    "postinstall": "gulp build && cd website/client && npm ci",
     "heroku-postbuild": ".heroku/report_deploy.sh"
   },
   "devDependencies": {

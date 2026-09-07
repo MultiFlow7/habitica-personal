@@ -49,3 +49,9 @@ webpack.webstorm.config
 mongodb-*.tgz
 /mongodb-*
 /.nyc_output
+
+# Local development runtime, logs, and private data
+/work/
+/deploy/.env
+/deploy/config.json
+/.habitica-server.json
