@@ -56,6 +56,7 @@ try {
   if (fixture && (!uid || fixture._id === uid)) {
     await mongoose.connection.collection('tasks').deleteMany({ userId: fixture._id });
     await mongoose.connection.collection('registrationevents').deleteMany({ userId: fixture._id });
+    await mongoose.connection.collection('userhistories').deleteMany({ userId: fixture._id });
     await users.deleteOne({ _id: fixture._id, 'auth.local.username': username });
   }
   await mongoose.disconnect();
