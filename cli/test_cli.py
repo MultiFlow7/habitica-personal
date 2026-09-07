@@ -184,6 +184,7 @@ class CliTests(unittest.TestCase):
         self.configured()
         for args in [('tasks', 'get', '../user'), ('tasks', 'create', '--data', '[]'),
                      ('tasks', 'create', '--text', 'missing type'), ('tasks', 'update', 't', '--data', '{"completed":true}'),
+                     ('tasks', 'update', 't', '--type', 'daily'), ('tasks', 'update', 't', '--data', '{"type":"daily"}'),
                      ('tasks', 'create', '--type', 'reward', '--text', 'x', '--value', 'nan')]:
             self.assertEqual(self.invoke(*args)[0], 2)
         self.assertFalse(self.server.records)
@@ -204,6 +205,19 @@ class CliTests(unittest.TestCase):
             code, result = self.invoke('tasks', 'score', 'task1', 'up')
         self.assertEqual(code, 5)
         self.assertTrue(result['error']['outcome_unknown'])
+
+    def test_complete_rejects_habits_without_scoring(self):
+        self.configured()
+        self.server.respond = lambda r: (200, {'success': True, 'data': {'type': 'habit'}}, {})
+        self.assertEqual(self.invoke('tasks', 'complete', 't1')[0], 2)
+        self.assertEqual([r[0] for r in self.server.records], ['GET'])
+
+    def test_malformed_success_response_does_not_escape_json_contract(self):
+        self.configured()
+        self.server.respond = lambda r: (200, {'success': True, 'data': float('nan')}, {})
+        code, result = self.invoke('user', 'get')
+        self.assertEqual(code, 6)
+        self.assertEqual(result['error']['code'], 'api')
 
     def test_disallow_insecure_remote_url_and_embedded_credentials(self):
         for url in ['http://example.com', 'https://user:secret@example.com', 'https://example.com/path', 'https://example.com?key=secret']:

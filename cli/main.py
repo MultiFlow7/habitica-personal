@@ -173,8 +173,11 @@ class Client:
             raise Failure('api', 'Unexpected API response; response body withheld.', outcome_unknown=method != 'GET')
 
 
-def add_fields(parser):
-    parser.add_argument('--type', choices=TASK_TYPES, required=False)
+def add_fields(parser, create=False):
+    if create:
+        parser.add_argument('--type', choices=TASK_TYPES)
+    else:
+        parser.set_defaults(type=None)
     parser.add_argument('--text')
     parser.add_argument('--notes')
     parser.add_argument('--priority', type=float, choices=[0.1, 1, 1.5, 2])
@@ -218,7 +221,7 @@ def build_parser():
             add_fields(p)
         if action.startswith('tag-'):
             p.add_argument('tag_id', type=identifier)
-    add_fields(tasks.add_parser('create'))
+    add_fields(tasks.add_parser('create'), create=True)
     tags = commands.add_parser('tags').add_subparsers(dest='action', required=True)
     tags.add_parser('list')
     tags.add_parser('create').add_argument('--name', required=True)
@@ -290,6 +293,8 @@ def task_body(args):
             data[field] = getattr(args, field)
     if not data:
         raise Failure('usage', 'Supply at least one task field.')
+    if args.action == 'update' and 'type' in data:
+        raise Failure('usage', 'Habitica does not support changing an existing task type.')
     if args.action == 'create' and (data.get('type') not in TASK_TYPES or not isinstance(data.get('text'), str) or not data['text'].strip()):
         raise Failure('usage', 'Creating a task requires a valid type and nonempty text.')
     if any(k in data for k in ['_id', 'id', 'userId', 'completed', 'history', 'stats', 'apiToken', 'auth']):
