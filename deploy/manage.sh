@@ -48,6 +48,9 @@ case "${1:-status}" in
     if docker compose -f compose.yml up -d --wait --wait-timeout 240 \
        && docker compose -f compose.yml exec -T app node deploy/smoke.mjs; then
       printf '%s %s %s\n' "$(date -u +%FT%TZ)" "$1" "$revision" >> deployments.log
+      cp "$release/manage.sh" "$ROOT/manage.sh.next"
+      chmod 700 "$ROOT/manage.sh.next"
+      mv "$ROOT/manage.sh.next" "$ROOT/manage.sh"
       echo "Release active: $revision"
     else
       docker compose -f compose.yml logs --tail 50 >&2

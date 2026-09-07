@@ -9,7 +9,7 @@ ENV GIT_CONFIG_COUNT=2 \
     GIT_CONFIG_VALUE_1=git:// \
     npm_config_registry=https://registry.npmjs.org
 COPY . .
-RUN cp config.json.example config.json && npm ci --no-audit --no-fund
+RUN python3 deploy/configure.py --output config.json && npm ci --no-audit --no-fund
 RUN NODE_ENV=test npm run test:common
 RUN npm run client:build
 RUN NODE_ENV=production ./node_modules/.bin/gulp build:prod
