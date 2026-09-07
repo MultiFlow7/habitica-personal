@@ -28,6 +28,12 @@ class PrivacyTests(unittest.TestCase):
         self.assertFalse(guard.content_rules(b'mongodb://mongo:27017/habitica?replicaSet=rs'))
         self.assertFalse(guard.content_rules(b'process.env.GITHUB_TOKEN'))
 
+    def test_user_export(self):
+        token = b'0' * 8 + (b'-' + b'0' * 4) * 3 + b'-' + b'0' * 12
+        exported = b'{"apiToken": "' + token + b'"}'
+        self.assertIn('Habitica API token', guard.content_rules(exported))
+        self.assertIn('stored password hash', guard.content_rules(b'$2b$12$' + b'A' * 53))
+
 
 if __name__ == '__main__':
     unittest.main()

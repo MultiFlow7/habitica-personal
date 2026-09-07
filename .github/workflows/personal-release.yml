@@ -37,6 +37,8 @@ jobs:
       - name: Export fixed release artifact
         if: github.event_name != 'pull_request'
         run: |
+          docker run --rm --entrypoint sh "habitica-personal:$GITHUB_SHA" -c \
+            'test ! -e /app/config.json && test ! -e /app/.habitica-server.json && test ! -e /app/.git && test ! -e /app/backups && test ! -e /data/db'
           mkdir -p release
           docker save "habitica-personal:$GITHUB_SHA" | gzip > release/habitica-image.tar.gz
           printf '%s\n' "$GITHUB_SHA" > release/REVISION
