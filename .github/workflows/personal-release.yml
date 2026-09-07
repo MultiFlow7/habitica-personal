@@ -19,6 +19,11 @@ jobs:
         with:
           submodules: true
           persist-credentials: false
+          fetch-depth: 0
+      - name: Check publication privacy
+        run: |
+          python3 scripts/test-privacy-check.py
+          python3 scripts/privacy-check.py --history
       - name: Build and run shared game tests
         run: docker build --build-arg REVISION="$GITHUB_SHA" -f deploy/Dockerfile -t "habitica-personal:$GITHUB_SHA" .
       - name: Start isolated production fixture
