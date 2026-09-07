@@ -5,7 +5,8 @@ import mongoose from 'mongoose';
 
 const base = process.env.SMOKE_URL || 'http://127.0.0.1:3000';
 const headers = { 'content-type': 'application/json', 'x-client': 'habitica-personal-smoke' };
-const username = `smoke_${randomBytes(8).toString('hex')}`;
+// Habitica usernames are limited to 20 characters.
+const username = `smk_${randomBytes(8).toString('hex')}`;
 const password = randomBytes(24).toString('base64url');
 let uid;
 async function api(method, path, body) {
@@ -30,7 +31,7 @@ try {
   });
   uid = user._id;
   const login = await api('POST', '/user/auth/local/login', { username, password });
-  assert.equal(login._id, uid);
+  assert.equal(login.id, uid);
   headers['x-api-user'] = uid;
   headers['x-api-key'] = login.apiToken;
   const before = (await api('GET', '/user')).stats;
@@ -41,7 +42,11 @@ try {
   const after = (await api('GET', '/user')).stats;
   assert.ok(after.exp > before.exp);
   assert.ok(after.gp > before.gp);
-  console.log('PASS: frontend, asset, registration, login, task creation, completion, XP, gold');
+  await mongoose.connect(JSON.parse(readFileSync('config.json', 'utf8')).NODE_DB_URI);
+  const saved = await mongoose.connection.collection('tasks').findOne({ _id: id, userId: uid });
+  assert.equal(saved?.completed, true, 'Completed task must be persisted in MongoDB');
+  await mongoose.disconnect();
+  console.log('PASS: frontend, asset, registration, login, task creation, completion, XP, gold, MongoDB persistence');
 } finally {
   // Only remove the randomly named fixture created by this run.
   const config = JSON.parse(readFileSync('config.json', 'utf8'));
@@ -50,6 +55,7 @@ try {
   const fixture = await users.findOne({ 'auth.local.username': username });
   if (fixture && (!uid || fixture._id === uid)) {
     await mongoose.connection.collection('tasks').deleteMany({ userId: fixture._id });
+    await mongoose.connection.collection('registrationevents').deleteMany({ userId: fixture._id });
     await users.deleteOne({ _id: fixture._id, 'auth.local.username': username });
   }
   await mongoose.disconnect();
