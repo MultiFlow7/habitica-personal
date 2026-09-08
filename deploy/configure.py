@@ -26,7 +26,7 @@ config.update({
     'SLACK_URL': '', 'SLACK_FLAGGING_URL': '', 'SLACK_SUBSCRIPTIONS_URL': '',
     'GOOGLE_CLIENT_ID': '', 'GOOGLE_CLIENT_SECRET': '', 'FACEBOOK_KEY': '',
     'FACEBOOK_SECRET': '', 'AMPLITUDE_KEY': '', 'AMPLITUDE_SECRET': '', 'GA_ID': '',
-    'TRUSTED_DOMAINS': 'localhost,127.0.0.1,' + args.url,
+    'TRUSTED_DOMAINS': 'http://localhost,http://127.0.0.1,' + args.url,
 })
 with target.open('x') as output:
     json.dump(config, output, indent=2)

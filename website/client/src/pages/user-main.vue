@@ -294,7 +294,8 @@ export default {
         setupPayments();
       });
     }).catch(err => {
-      console.error('Impossible to fetch user. Clean up localStorage and refresh.', err); // eslint-disable-line no-console
+      this.$root.$emit('habitica:load-failed');
+      console.error('Unable to initialize the application.', err.message); // eslint-disable-line no-console
     });
   },
   beforeDestroy () {

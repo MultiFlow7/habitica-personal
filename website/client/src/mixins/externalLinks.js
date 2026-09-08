@@ -1,4 +1,5 @@
 /* eslint-disable no-continue */
+import { parseTrustedDomains } from '@/libs/trustedDomains.mjs';
 
 /**
  * Is the Link URL part of the TRUSTED_DOMAINS list
@@ -16,8 +17,7 @@ export function isTrustedDomain (linkUrl, trustedDomains) {
   return trustedDomains.some(domain => hostname.includes(domain.hostname));
 }
 
-const TRUSTED_DOMAINS = (import.meta.env.TRUSTED_DOMAINS ?? 'localhost').split(',')
-  .map(u => (u === 'localhost' ? new URL('http://localhost') : new URL(u)));
+const TRUSTED_DOMAINS = parseTrustedDomains(import.meta.env.TRUSTED_DOMAINS ?? 'localhost');
 
 export default {
   methods: {

@@ -244,5 +244,7 @@
   "rememberToBeKind": "Please remember to be kind, respectful, and follow the <%= linkOpen %>Community Guidelines<%= linkClose %>.",
   "confirmPurchase": "Confirm Purchase",
   "avoidSPI": "Avoid SPI",
-  "avoidSPIDetails": "For your privacy, avoid including <%= firstLink %>sensitive personal information<%= linkClose %> (SPI) when using Habitica. Your account data, including tasks, is stored on our servers so you can access it from any device.<br><br>To learn more, review our <%= secondLink %>Privacy Policy<%= linkClose %>."
+  "avoidSPIDetails": "For your privacy, avoid including <%= firstLink %>sensitive personal information<%= linkClose %> (SPI) when using Habitica. Your account data, including tasks, is stored on our servers so you can access it from any device.<br><br>To learn more, review our <%= secondLink %>Privacy Policy<%= linkClose %>.",
+  "appLoadFailed": "Habitica could not finish loading. Please try again. Your sign-in details are kept on this device.",
+  "appLoadRetry": "Try again"
 }
