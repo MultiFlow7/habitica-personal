@@ -138,3 +138,21 @@ gh run list --workflow personal-release.yml
 
 备份默认保留在服务器，同机备份不能防止整台服务器丢失；需要时通过 SCP 另存一份。
 脚本不会自动清理历史发布和备份，磁盘空间不足时根据版本记录人工选择清理。
+
+## 部署在 /habitica 子路径
+
+个人生产镜像将前端构建到 `/habitica/`，Compose 的 `APP_BASE_PATH=/habitica`
+使后端接受同一前缀。根路径会转到子路径，根 API 仍兼容 SSH 隧道 CLI 和健康检查。
+上游本地 Vite 开发默认仍使用 `/`；自定义开发前缀需同时配置前后端。
+
+公网配置的 `BASE_URL` 应为完整地址（例如 `https://www.example.com/habitica`，无末尾斜杠）。
+修改前备份私密配置并保留原会话密钥，失败时同时恢复配置和应用。
+Nginx 仅转发 `/habitica/`，保留该前缀，设置规范 Host 和 `X-Forwarded-Proto: https`。
+通过 Vercel 接入时仅为这个路径添加 HTTPS 外部 rewrite；原站仍由 Vercel 提供。
+若 www 原先配置为域名级重定向，需先改为直接绑定项目，再在路由规则中保留其他路径的跳转。
+源站使用有效且自动续期的 TLS 证书。源站 IP、私钥和运行配置不写入公开仓库。
+API、导出和认证响应必须禁用 CDN 缓存；不能把用户凭据加入 rewrite 查询参数。
+
+发布验证分两层：CI 在临时数据库中执行完整注册、登录、任务和浏览器检查；
+生产仅运行 `deploy/check.mjs` 的只读页面/API检查，完整 smoke 默认拒绝运行。
+此改动不涉及数据库结构或数据迁移。

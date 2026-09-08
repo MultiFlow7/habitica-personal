@@ -46,7 +46,7 @@ case "${1:-status}" in
     printf 'HABITICA_IMAGE=habitica-personal:%s\n' "$revision" > .env.next
     mv .env.next .env
     if docker compose -f compose.yml up -d --wait --wait-timeout 240 \
-       && docker compose -f compose.yml exec -T app node deploy/smoke.mjs; then
+       && docker compose -f compose.yml exec -T app node deploy/check.mjs; then
       printf '%s %s %s\n' "$(date -u +%FT%TZ)" "$1" "$revision" >> deployments.log
       cp "$release/manage.sh" "$ROOT/manage.sh.next"
       chmod 700 "$ROOT/manage.sh.next"
