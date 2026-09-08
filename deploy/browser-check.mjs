@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { randomBytes } from 'node:crypto';
 import { chromium } from '../work/browser/node_modules/playwright/index.mjs';
 
 if (process.env.GITHUB_ACTIONS !== 'true') throw new Error('Isolated CI only');
@@ -44,6 +45,25 @@ try {
   ]);
   assert.equal(new URL(login.url()).pathname, '/habitica/api/v4/user/auth/local/login');
   assert.equal(login.status(), 401);
+  const username = `web_${randomBytes(6).toString('hex')}`;
+  await page.goto(`${origin}/habitica/register`);
+  await page.locator('#emailInput').fill(`${username}@example.com`);
+  await page.locator('#passwordInput').fill('isolated-fixture-password');
+  await page.locator('#confirmPasswordInput').fill('isolated-fixture-password');
+  await page.locator('#continue-button').click();
+  await page.locator('#usernameInput').fill(username);
+  await page.locator('label[for=privacyTOS]').click();
+  const [registration] = await Promise.all([
+    page.waitForResponse(res => res.url().includes('/user/auth/local/register')),
+    page.locator('button[type=submit]').click(),
+  ]);
+  assert.equal(registration.status(), 200);
+  await page.waitForURL(`${origin}/habitica/`);
+  await page.locator('#loading-screen-inapp').waitFor({ state: 'hidden', timeout: 30000 });
+  console.log('PASS: browser registration reaches authenticated application');
+  await page.reload();
+  await page.locator('#loading-screen-inapp').waitFor({ state: 'hidden', timeout: 30000 });
+  console.log('PASS: authenticated refresh');
   assert.deepEqual(badPaths, [], 'All same-origin resources and API calls must stay inside the prefix');
   assert.deepEqual(errors, [], 'No browser JavaScript errors');
   console.log('PASS: browser boot, login/register deep links, prefixed Axios login and resources');
