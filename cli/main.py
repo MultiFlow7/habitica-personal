@@ -39,7 +39,13 @@ def safe_url(value):
     try:
         url = parse.urlsplit(value)
         port = url.port
-        if url.username or url.password or url.query or url.fragment or url.path not in ('', '/'):
+        if url.username or url.password or url.query or url.fragment:
+            raise ValueError()
+        path = url.path.rstrip('/')
+        if path and (not path.startswith('/') or any(
+            not segment or not all(c.isascii() and (c.isalnum() or c in '_-') for c in segment)
+            for segment in path[1:].split('/')
+        )):
             raise ValueError()
         host = url.hostname
         if not host or url.scheme not in ('http', 'https'):
@@ -51,12 +57,12 @@ def safe_url(value):
             pass
         if url.scheme == 'http' and not loopback:
             raise ValueError()
-        # Canonical origin; credentials are tied to this exact origin.
+        # Credentials are tied to the exact origin AND application base path.
         host = f'[{host}]' if ':' in host else host
         default_port = 443 if url.scheme == 'https' else 80
-        return f'{url.scheme}://{host}' + (f':{port}' if port and port != default_port else '')
+        return f'{url.scheme}://{host}' + (f':{port}' if port and port != default_port else '') + path
     except (ValueError, AttributeError):
-        raise Failure('usage', 'URL must be an HTTPS origin or loopback HTTP origin, without path, credentials or query.')
+        raise Failure('usage', 'URL must use HTTPS (or loopback HTTP), an optional simple base path, and no credentials or query.')
 
 
 def identifier(value):

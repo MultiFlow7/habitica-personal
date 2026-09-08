@@ -224,9 +224,13 @@ class CliTests(unittest.TestCase):
         self.assertEqual(result['error']['code'], 'api')
 
     def test_disallow_insecure_remote_url_and_embedded_credentials(self):
-        for url in ['http://example.com', 'https://user:secret@example.com', 'https://example.com/path', 'https://example.com?key=secret']:
+        for url in ['http://example.com', 'https://user:secret@example.com', 'https://example.com/a/../b', 'https://example.com/a%2fb', 'https://example.com/a//b', 'https://example.com?key=secret']:
             with self.assertRaises(cli.Failure):
                 cli.safe_url(url)
+
+    def test_application_base_path_is_part_of_credential_scope(self):
+        self.assertEqual(cli.safe_url('https://example.com:443/habitica/'), 'https://example.com/habitica')
+        self.assertNotEqual(cli.safe_url('https://example.com/habitica'), cli.safe_url('https://example.com'))
 
     def test_machine_schema_and_real_entrypoint(self):
         result = subprocess.run([sys.executable, str(Path(__file__).resolve().parents[1] / 'habitica'), 'schema'], capture_output=True, text=True)
