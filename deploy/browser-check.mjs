@@ -57,7 +57,7 @@ try {
     page.waitForResponse(res => res.url().includes('/user/auth/local/register')),
     page.locator('button[type=submit]').click(),
   ]);
-  assert.equal(registration.status(), 200);
+  assert.equal(registration.status(), 201);
   await page.waitForURL(`${origin}/habitica/`);
   await page.locator('#loading-screen-inapp').waitFor({ state: 'hidden', timeout: 30000 });
   console.log('PASS: browser registration reaches authenticated application');
