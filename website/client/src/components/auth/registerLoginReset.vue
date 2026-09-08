@@ -635,10 +635,16 @@ export default {
   },
   methods: {
     async login () {
-      await this.$store.dispatch('auth:login', {
-        username: this.username,
-        password: this.password,
-      });
+      try {
+        await this.$store.dispatch('auth:login', {
+          username: this.username,
+          password: this.password,
+        });
+      } catch (error) {
+        // The response interceptor already displays rejected credentials.
+        if (error.response && error.response.status === 401) return;
+        throw error;
+      }
 
       const redirectTo = this.sanitizeRedirect(this.$route.query.redirectTo);
 

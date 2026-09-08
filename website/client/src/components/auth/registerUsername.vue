@@ -270,6 +270,7 @@ export default {
         const redirect = this.sanitizeRedirect(this.$route.query.redirectTo);
 
         window.location.href = appUrl(redirect);
+        return;
       } else if (this.registrationMethod === 'apple') {
         await this.$store.dispatch('auth:appleAuth', {
           idToken: window.sessionStorage.getItem('apple-token'),
