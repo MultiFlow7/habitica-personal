@@ -75,7 +75,7 @@
               <a
                 target="_blank"
                 rel="noopener noreferrer"
-                href="/static/community-guidelines"
+                :href="appUrl('/static/community-guidelines')"
               >{{ $t('communityGuidelines') }}
               </a>
             </li>
@@ -287,14 +287,14 @@
               <a
                 target="_blank"
                 rel="noopener noreferrer"
-                href="/static/privacy"
+                :href="appUrl('/static/privacy')"
               >{{ $t('privacy') }}</a>
             </span>
             <span class="terms">
               <a
                 target="_blank"
                 rel="noopener noreferrer"
-                href="/static/terms"
+                :href="appUrl('/static/terms')"
               >{{ $t('terms') }}</a>
             </span>
           </div>
@@ -310,14 +310,14 @@
             <a
               target="_blank"
               rel="noopener noreferrer"
-              href="/static/privacy"
+              :href="appUrl('/static/privacy')"
             >{{ $t('privacy') }}</a>
           </div>
           <div class="mobile-terms mx-auto mb-2">
             <a
               target="_blank"
               rel="noopener noreferrer"
-              href="/static/terms"
+              :href="appUrl('/static/terms')"
             >{{ $t('terms') }}</a>
           </div>
           <div class="melior">

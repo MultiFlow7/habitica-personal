@@ -84,6 +84,7 @@
 </style>
 
 <script>
+import { appUrl } from '@/libs/basePath';
 import achievementFooter from './achievementFooter';
 import achievementAvatar from './achievementAvatar';
 import { mapState } from '@/libs/store';
@@ -98,7 +99,7 @@ export default {
   data () {
     return {
       gearAchievementLinks: {
-        linkOpen: '<a href="/user/settings/general" target="_blank" rel="noreferrer noopener">',
+        linkOpen: `<a href="${appUrl('/user/settings/general')}" target="_blank" rel="noreferrer noopener">`,
         linkClose: '</a>',
       },
     };

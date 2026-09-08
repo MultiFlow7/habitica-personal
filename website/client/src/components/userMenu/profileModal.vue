@@ -53,6 +53,7 @@
 </style>
 
 <script>
+import { appUrl } from '@/libs/basePath';
 import profile from './profile';
 import closeX from '../ui/closeX';
 
@@ -83,11 +84,11 @@ export default {
   },
   methods: {
     onShown () {
-      window.history.pushState('', null, this.toPath);
+      window.history.pushState('', null, appUrl(this.toPath));
     },
     beforeHide () {
-      if (this.$route.path !== window.location.pathname) {
-        window.history.pushState('', null, this.fromPath);
+      if (appUrl(this.$route.path) !== window.location.pathname) {
+        window.history.pushState('', null, appUrl(this.fromPath));
       }
     },
     close () {

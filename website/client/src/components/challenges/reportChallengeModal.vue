@@ -203,6 +203,7 @@
 </style>
 
 <script>
+import { appUrl } from '@/libs/basePath';
 import { mapState } from '@/libs/store';
 import notifications from '@/mixins/notifications';
 import { userStateMixin } from '../../mixins/userState';
@@ -217,8 +218,8 @@ export default {
   mixins: [notifications, userStateMixin],
   data () {
     const abuseFlagModalBody = {
-      firstLinkStart: '<a href="/static/community-guidelines" target="_blank" rel="noopener noreferrer">',
-      secondLinkStart: '<a href="/static/terms" target="_blank" rel="noopener noreferrer">',
+      firstLinkStart: `<a href="${appUrl('/static/community-guidelines')}" target="_blank" rel="noopener noreferrer">`,
+      secondLinkStart: `<a href="${appUrl('/static/terms')}" target="_blank" rel="noopener noreferrer">`,
       linkEnd: '</a>',
     };
 

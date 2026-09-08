@@ -26,7 +26,7 @@ export function forceSSL (req, res, next) {
     isHTTP(req)
     && (!SKIP_SSL_CHECK_KEY || !skipSSLCheck || skipSSLCheck !== SKIP_SSL_CHECK_KEY)
   ) {
-    return res.redirect(BASE_URL + req.originalUrl);
+    return res.redirect(BASE_URL.replace(/\/$/, '') + req.url);
   }
 
   return next();

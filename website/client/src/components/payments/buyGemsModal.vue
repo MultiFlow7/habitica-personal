@@ -23,10 +23,8 @@
           <img
             v-else
             :alt="$t('supportHabitica')"
-            src="/static/gems/header/normal-header.png"
-            srcset="/static/gems/header/normal-header.png,
-              /static/gems/header/normal-header@2x.png 2x,
-              /static/gems/header/normal-header@3x.png 3x"
+            :src="appUrl('/static/gems/header/normal-header.png')"
+            :srcset="appSrcset('/static/gems/header/normal-header.png, /static/gems/header/normal-header@2x.png 2x, /static/gems/header/normal-header@3x.png 3x')"
           >
         </div>
       </div>
@@ -257,7 +255,7 @@
       .header-wrap {
         padding-top: 4.5rem;
         padding-bottom: 1.5rem;
-        background-image: url('/static/gems/header/fall-header-bg@2x.png');
+        background-image: url('#{$app-base-path}/static/gems/header/fall-header-bg@2x.png');
         background-size: 100%;
       }
 
@@ -302,7 +300,7 @@
   }
   #buy-gems.event-spooky_extra_gems {
     .header-wrap {
-      background-image: url('/static/gems/header/spooky-header-bg@2x.png');
+      background-image: url('#{$app-base-path}/static/gems/header/spooky-header-bg@2x.png');
     }
   }
   #buy-gems.event-winter_extra_gems {
@@ -468,6 +466,7 @@
 </style>
 
 <script>
+import { appUrl, appSrcset } from '@/libs/basePath';
 import find from 'lodash/find';
 import moment from 'moment';
 import { mapState } from '@/libs/store';
@@ -540,11 +539,11 @@ export default {
         name: currentEvent.event,
         class: currentEvent.gemsPromo ? `event-${currentEvent.event}` : '',
         gemsPromo: currentEvent.gemsPromo,
-        src: `/static/gems/header/${gemsPromoSeason}-header.png`,
-        srcSet: `/static/gems/header/${gemsPromoSeason}-header.png,
+        src: appUrl(`/static/gems/header/${gemsPromoSeason}-header.png`),
+        srcSet: appSrcset(`/static/gems/header/${gemsPromoSeason}-header.png,
           /static/gems/header/${gemsPromoSeason}-header@2x.png 2x,
           /static/gems/header/${gemsPromoSeason}-header@3x.png 3x
-        `,
+        `),
         promo: currentEvent.promo,
         timeZoneAbbrev,
         startMonth: moment(currentEvent.start).format('MMMM'),

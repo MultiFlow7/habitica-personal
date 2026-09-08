@@ -313,6 +313,7 @@
 </style>
 
 <script>
+import { appUrl } from '@/libs/basePath';
 import { setup as setupPayments } from '@/libs/payments';
 import paymentsMixin from '../../mixins/payments';
 import GroupPlanCreationModal from '../group-plans/groupPlanCreationModal.vue';
@@ -330,7 +331,7 @@ export default {
       modalPage: 'account',
       modalTitle: this.$t('register'),
       faqLinks: {
-        linkOpen: '<a href="/static/faq#what-is-group-plan">',
+        linkOpen: `<a href="${appUrl('/static/faq#what-is-group-plan')}">`,
         linkClose: '</a>',
       },
     };

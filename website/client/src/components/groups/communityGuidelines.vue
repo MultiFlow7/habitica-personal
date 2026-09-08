@@ -57,13 +57,14 @@
 </style>
 
 <script>
+import { appUrl } from '@/libs/basePath';
 import { mapState } from '@/libs/store';
 
 export default {
   data () {
     return {
       guidelineLinks: {
-        linkOpen: '<a href="/static/community-guidelines" target="_blank" rel="noreferrer noopener">',
+        linkOpen: `<a href="${appUrl('/static/community-guidelines')}" target="_blank" rel="noreferrer noopener">`,
         linkClose: '</a>',
       },
     };

@@ -353,6 +353,7 @@
 </template>
 
 <script>
+import { appUrl } from '@/libs/basePath';
 import axios from 'axios';
 import size from 'lodash/size';
 import keys from 'lodash/keys';
@@ -421,7 +422,7 @@ export default {
       },
       content: Content,
       allocateLinks: {
-        linkOpen: '<a href="/shops/market">',
+        linkOpen: `<a href="${appUrl('/shops/market')}">`,
         linkClose: '</a>',
       },
     };

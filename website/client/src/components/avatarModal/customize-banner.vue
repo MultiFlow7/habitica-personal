@@ -53,6 +53,7 @@
 </style>
 
 <script>
+import { appUrl } from '@/libs/basePath';
 import sparkles from '@/assets/svg/sparkles-left.svg?raw';
 
 export default {
@@ -62,7 +63,7 @@ export default {
         sparkles,
       }),
       shopLinks: {
-        linkOpen: '<a href="/shops/customizations">',
+        linkOpen: `<a href="${appUrl('/shops/customizations')}">`,
         linkClose: '</a>',
       },
     };

@@ -429,6 +429,7 @@
 </style>
 
 <script>
+import { appUrl } from '@/libs/basePath';
 import Vue from 'vue';
 import findIndex from 'lodash/findIndex';
 import cloneDeep from 'lodash/cloneDeep';
@@ -715,7 +716,7 @@ export default {
       });
     },
     async exportChallengeCsv () {
-      window.location = `/api/v4/challenges/${this.searchId}/export/csv`;
+      window.location = appUrl(`/api/v4/challenges/${this.searchId}/export/csv`);
     },
     cloneChallenge () {
       this.$root.$emit('habitica:clone-challenge', {

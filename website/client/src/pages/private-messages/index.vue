@@ -667,6 +667,7 @@ h3 {
 </style>
 
 <script>
+import { appUrl } from '@/libs/basePath';
 import Vue, { defineComponent } from 'vue';
 import moment from 'moment';
 import groupBy from 'lodash/groupBy';
@@ -775,7 +776,7 @@ export default defineComponent({
       messagesLoading: false,
       MAX_MESSAGE_LENGTH: MAX_MESSAGE_LENGTH.toString(),
       guidelineLinks: {
-        linkOpen: '<a href="/static/community-guidelines" target="_blank" rel="noreferrer noopener">',
+        linkOpen: `<a href="${appUrl('/static/community-guidelines')}" target="_blank" rel="noreferrer noopener">`,
         linkClose: '</a>',
       },
     };

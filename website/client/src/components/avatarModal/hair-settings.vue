@@ -72,6 +72,7 @@
 </template>
 
 <script>
+import { appUrl } from '@/libs/basePath';
 import groupBy from 'lodash/groupBy';
 import appearance from '@/../../common/script/content/appearance';
 import { subPageMixin } from '../../mixins/subPage';
@@ -98,7 +99,7 @@ export default {
   data () {
     return {
       customizeLinks: {
-        linkOpen: '<a href="/shops/customizations">',
+        linkOpen: `<a href="${appUrl('/shops/customizations')}">`,
         linkClose: '</a>',
       },
     };

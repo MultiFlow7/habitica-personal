@@ -1278,6 +1278,7 @@
 </style>
 
 <script>
+import { appUrl } from '@/libs/basePath';
 import axios from 'axios';
 import moment from 'moment';
 import get from 'lodash/get';
@@ -1364,8 +1365,8 @@ export default {
       ],
       calendarHighlights: { dates: [new Date()] },
       spiLinkData: {
-        firstLink: '<a href="/static/privacy#section_1" target="_blank" rel="noopener noreferrer">',
-        secondLink: '<a href="/static/privacy" target="_blank" rel="noopener noreferrer">',
+        firstLink: `<a href="${appUrl('/static/privacy#section_1')}" target="_blank" rel="noopener noreferrer">`,
+        secondLink: `<a href="${appUrl('/static/privacy')}" target="_blank" rel="noopener noreferrer">`,
         linkClose: '</a>',
       },
       taskValue: 0,

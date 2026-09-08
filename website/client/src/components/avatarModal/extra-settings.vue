@@ -74,6 +74,7 @@
 </template>
 
 <script>
+import { appUrl } from '@/libs/basePath';
 import appearance from '@/../../common/script/content/appearance';
 import upperFirst from 'lodash/upperFirst';
 import { subPageMixin } from '../../mixins/subPage';
@@ -105,7 +106,7 @@ export default {
       },
       chairKeys: ['none', 'black', 'blue', 'green', 'pink', 'red', 'yellow', 'handleless_black', 'handleless_blue', 'handleless_green', 'handleless_pink', 'handleless_red', 'handleless_yellow'],
       customizeLinks: {
-        linkOpen: '<a href="/shops/customizations">',
+        linkOpen: `<a href="${appUrl('/shops/customizations')}">`,
         linkClose: '</a>',
       },
     };

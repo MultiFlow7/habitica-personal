@@ -14,7 +14,7 @@
       <div class="text-center">
         <div>
           <a
-            href="/static/home"
+            :href="appUrl('/static/home')"
             class="svg-icon svg habitica-logo mx-auto mb-4"
             v-html="icons.habiticaIcon"
           ></a>
@@ -226,7 +226,7 @@
       <div>
         <div>
           <a
-            href="/static/home"
+            :href="appUrl('/static/home')"
             class="svg-icon habitica-logo mx-auto mb-4"
             v-html="icons.habiticaIcon"
           ></a>
@@ -294,7 +294,7 @@
       <div class="text-center">
         <div>
           <a
-            href="/static/home"
+            :href="appUrl('/static/home')"
             class="svg-icon habitica-logo mx-auto mb-4"
             v-html="icons.habiticaIcon"
           ></a>
@@ -537,6 +537,7 @@
 </style>
 
 <script>
+import { appUrl } from '@/libs/basePath';
 import axios from 'axios';
 import debounce from 'lodash/debounce';
 import isEmail from 'validator/es/lib/isEmail';
@@ -641,7 +642,7 @@ export default {
 
       const redirectTo = this.sanitizeRedirect(this.$route.query.redirectTo);
 
-      window.location.href = redirectTo;
+      window.location.href = appUrl(redirectTo);
     },
     setTitle () {
       if (this.resetPasswordSetNewOne) {

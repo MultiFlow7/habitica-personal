@@ -308,6 +308,7 @@
 </style>
 
 <script>
+import { appUrl } from '@/libs/basePath';
 // @TODO: Break this down into components
 
 import extend from 'lodash/extend';
@@ -577,7 +578,7 @@ export default {
       this.$root.$emit('bv::show::modal', 'group-gems-modal');
     },
     messageLeader () {
-      window.open(`${PAGES.PRIVATE_MESSAGES}?uuid=${this.group.leader.id}`);
+      window.open(appUrl(`${PAGES.PRIVATE_MESSAGES}?uuid=${this.group.leader.id}`));
     },
   },
 };

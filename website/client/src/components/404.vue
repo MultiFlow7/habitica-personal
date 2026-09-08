@@ -35,14 +35,15 @@
 </template>
 
 <script>
+import { appUrl } from '@/libs/basePath';
 import { mapState } from '@/libs/store';
 
 export default {
   data () {
     return {
       tavernLinks: {
-        faqLink: '<a href="/static/faq/tavern-and-guilds">',
-        homeLink: '<a href="/">',
+        faqLink: `<a href="${appUrl('/static/faq/tavern-and-guilds')}">`,
+        homeLink: `<a href="${appUrl('/')}">`,
         linkClose: '</a>',
       },
     };

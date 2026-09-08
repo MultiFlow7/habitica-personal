@@ -172,6 +172,7 @@
 </style>
 
 <script>
+import { appUrl } from '@/libs/basePath';
 import debounce from 'lodash/debounce';
 import PrivacyBanner from '@/components/header/banners/privacy';
 import accountCreation from '@/mixins/accountCreation';
@@ -188,8 +189,8 @@ export default {
       usernameIssues: [],
       needsEmailField: false,
       acceptLinks: {
-        termsLink: '<a href="/static/terms" target="_blank" rel="noreferrer noopener">',
-        privacyLink: '<a href="/static/privacy" target="_blank" rel="noreferrer noopener">',
+        termsLink: `<a href="${appUrl('/static/terms')}" target="_blank" rel="noreferrer noopener">`,
+        privacyLink: `<a href="${appUrl('/static/privacy')}" target="_blank" rel="noreferrer noopener">`,
         linkClose: '</a>',
       },
     };
@@ -268,7 +269,7 @@ export default {
 
         const redirect = this.sanitizeRedirect(this.$route.query.redirectTo);
 
-        window.location.href = redirect;
+        window.location.href = appUrl(redirect);
       } else if (this.registrationMethod === 'apple') {
         await this.$store.dispatch('auth:appleAuth', {
           idToken: window.sessionStorage.getItem('apple-token'),
@@ -283,7 +284,7 @@ export default {
           username: this.username,
         });
       }
-      window.location.href = '/';
+      window.location.href = appUrl('/');
     },
     // eslint-disable-next-line func-names
     validateUsername: debounce(function (username) {

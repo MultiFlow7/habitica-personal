@@ -183,6 +183,7 @@
 </style>
 
 <script>
+import { appUrl } from '@/libs/basePath';
 import closeIcon from '@/assets/svg/close.svg?raw';
 import sparkles from '@/assets/svg/sparkles-left.svg?raw';
 
@@ -194,7 +195,7 @@ export default {
         sparkles,
       }),
       faqLinks: {
-        linkOpen: '<a href="/static/faq#group-plans" target="_blank" rel="noreferrer noopener">',
+        linkOpen: `<a href="${appUrl('/static/faq#group-plans')}" target="_blank" rel="noreferrer noopener">`,
         linkClose: '</a>',
       },
     };

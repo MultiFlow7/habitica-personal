@@ -440,6 +440,7 @@
 </style>
 
 <script>
+import { appUrl } from '@/libs/basePath';
 import size from 'lodash/size';
 import keys from 'lodash/keys';
 import Content from '@/../../common/script/content';
@@ -481,7 +482,7 @@ export default {
         per: { title: 'allocatePer', popover: 'perText', allocatepop: 'allocatePerPop' },
       },
       allocateLinks: {
-        linkOpen: '<a href="/shops/market">',
+        linkOpen: `<a href="${appUrl('/shops/market')}">`,
         linkClose: '</a>',
       },
     };

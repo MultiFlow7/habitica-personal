@@ -190,6 +190,7 @@
 </style>
 
 <script>
+import { appUrl } from '@/libs/basePath';
 import Avatar from '../avatar';
 import { mapState } from '@/libs/store';
 import markdownDirective from '@/directives/markdown';
@@ -215,10 +216,10 @@ export default {
       }),
       selectedClass: 'warrior',
       optOutLinks: {
-        linkOpen: '<a href="/static/faq#what-classes" target="_blank" rel="noreferrer noopener">',
+        linkOpen: `<a href="${appUrl('/static/faq#what-classes')}" target="_blank" rel="noreferrer noopener">`,
         linkClose: '</a>',
       },
-      classLink: '/static/faq#what-classes',
+      classLink: appUrl('/static/faq#what-classes'),
     };
   },
   computed: {

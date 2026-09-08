@@ -1,3 +1,4 @@
+import { appUrl } from '@/libs/basePath';
 import axios from 'axios';
 import { authAsCredentialsState, LOCALSTORAGE_AUTH_KEY } from '@/libs/auth';
 
@@ -126,7 +127,7 @@ export function logout (store, options = {}) {
   localStorage.clear();
   sessionStorage.clear();
   const query = options.redirectToLogin === true ? '?redirectToLogin=true' : '';
-  window.location.href = `/logout-server${query}`;
+  window.location.href = appUrl(`/logout-server${query}`);
 }
 
 export function setNewToken (store, params) {

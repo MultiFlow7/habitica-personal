@@ -1,3 +1,4 @@
+import { appUrl } from '@/libs/basePath';
 import debounce from 'lodash/debounce';
 import isEmail from 'validator/es/lib/isEmail';
 import { MINIMUM_PASSWORD_LENGTH } from '@/../../common/script/constants';
@@ -100,7 +101,7 @@ export default {
           allowRegister: false,
         });
         if (authId) {
-          window.location.href = '/';
+          window.location.href = appUrl('/');
         } else {
           this.$store.state.registrationOptions = {
             authData: this.authData,
@@ -116,7 +117,7 @@ export default {
         await hello(network).logout();
       } catch (e) {} // eslint-disable-line
 
-      const redirectUrl = `${window.location.protocol}//${window.location.host}`;
+      const redirectUrl = `${window.location.origin}${appUrl('/')}`;
       const auth = await hello(network).login({
         scope: 'email',
         // explicitly pass the redirect url or it might redirect to /home

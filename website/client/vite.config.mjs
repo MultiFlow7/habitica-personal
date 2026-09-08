@@ -10,6 +10,10 @@ import setupNconf from '../server/libs/setupNconf';
 const configFile = path.join(path.resolve(__dirname, '../../config.json'));
 setupNconf(configFile, nconf);
 const DEV_BASE_URL = nconf.get('BASE_URL');
+const APP_BASE_PATH = process.env.APP_BASE_PATH || '/';
+if (!/^\/(?:[A-Za-z0-9_-]+\/)*$/.test(APP_BASE_PATH)) {
+  throw new Error('APP_BASE_PATH must be / or a path such as /habitica/');
+}
 
 let S3_URL = nconf.get('S3_URL');
 if (S3_URL && !S3_URL.endsWith('/')) {
@@ -104,7 +108,7 @@ export default defineConfig({
         }
         return `${S3_URL}${filename}`
       } else {
-        return { relative: true }
+        return `${APP_BASE_PATH}${filename}`
       }
     }
   },
@@ -121,7 +125,12 @@ export default defineConfig({
       }
     }
   },
-  base: '/',
+  base: APP_BASE_PATH,
+  css: {
+    preprocessorOptions: {
+      scss: { additionalData: `$app-base-path: '${APP_BASE_PATH.replace(/\/$/, '')}';` },
+    },
+  },
   server: {
     headers: { 'Cache-Control': 'no-store' },
     proxy: {

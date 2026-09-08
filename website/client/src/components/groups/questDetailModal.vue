@@ -330,6 +330,7 @@
 </style>
 
 <script>
+import { appUrl } from '@/libs/basePath';
 import orderBy from 'lodash/orderBy';
 import * as quests from '@/../../common/script/content/quests';
 import getItemInfo from '@/../../common/script/libs/getItemInfo';
@@ -370,7 +371,7 @@ export default {
       quests,
       sortBy: 'AZ',
       questLinks: {
-        linkOpen: '<a href="/shops/quests">',
+        linkOpen: `<a href="${appUrl('/shops/quests')}">`,
         linkClose: '</a>',
       },
     };

@@ -82,6 +82,7 @@
 </style>
 
 <script>
+import { appUrl } from '@/libs/basePath';
 import helloNametag from '@/assets/svg/hello-habitican.svg?raw';
 import usernameForm from './usernameForm';
 
@@ -99,8 +100,8 @@ export default {
         linkClose: '</a>',
       },
       requirementsLinks: {
-        termsLink: '<a href="/static/terms" target="_blank" rel="noreferrer noopener">',
-        guidelinesLink: '<a href="/static/community-guidelines" target="_blank" rel="noreferrer noopener">',
+        termsLink: `<a href="${appUrl('/static/terms')}" target="_blank" rel="noreferrer noopener">`,
+        guidelinesLink: `<a href="${appUrl('/static/community-guidelines')}" target="_blank" rel="noreferrer noopener">`,
         linkClose: '</a>',
       },
     };

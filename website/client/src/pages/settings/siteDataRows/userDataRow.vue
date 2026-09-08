@@ -41,7 +41,7 @@
               <td>{{ $t('taskHistory') }}</td>
               <td>
                 <a
-                  href="/export/history.csv"
+                  :href="appUrl('/export/history.csv')"
                   class="btn btn-secondary"
                 >
                   {{ $t('downloadCSV') }}
@@ -56,12 +56,12 @@
                   right="right"
                 >
                   <b-dropdown-item
-                    href="/export/userdata.xml"
+                    :href="appUrl('/export/userdata.xml')"
                   >
                     {{ $t('xml') }}
                   </b-dropdown-item>
                   <b-dropdown-item
-                    href="/export/userdata.json"
+                    :href="appUrl('/export/userdata.json')"
                   >
                     {{ $t('json') }}
                   </b-dropdown-item>
