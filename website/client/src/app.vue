@@ -7,7 +7,22 @@
       <div class="row">
         <div class="col-12 text-center">
           <!-- eslint-disable max-len -->
+          <div
+            v-if="loadingError"
+            role="alert"
+            class="loading-error"
+          >
+            <p>{{ $t('appLoadFailed') }}</p>
+            <button
+              type="button"
+              class="btn btn-primary"
+              @click="retryLoading"
+            >
+              {{ $t('appLoadRetry') }}
+            </button>
+          </div>
           <svg
+            v-else
             id="melior"
             class="color svg svg-icon"
             xmlns="http://www.w3.org/2000/svg"
@@ -129,6 +144,8 @@ export default {
       audioSuffix: null,
 
       loading: true,
+      loadingError: false,
+      loadingTimer: null,
       bannerHidden: false,
     };
   },
@@ -140,6 +157,7 @@ export default {
     },
   },
   created () {
+    this.$root.$on('habitica:load-failed', this.showLoadingError);
     // Setup listener for title
     this.$store.watch(state => state.title, title => {
       document.title = title;
@@ -280,6 +298,9 @@ export default {
     });
   },
   mounted () {
+    this.loadingTimer = window.setTimeout(() => {
+      if (this.loading) this.showLoadingError();
+    }, 45000);
     // Remove the index.html loading screen and now show the inapp loading
     const loadingScreen = document.getElementById('loading-screen');
     if (loadingScreen) document.body.removeChild(loadingScreen);
@@ -301,8 +322,22 @@ export default {
       }
     });
   },
+  beforeDestroy () {
+    window.clearTimeout(this.loadingTimer);
+    this.$root.$off('habitica:load-failed', this.showLoadingError);
+  },
   methods: {
+    showLoadingError () {
+      if (!this.loading) return;
+      window.clearTimeout(this.loadingTimer);
+      this.loadingError = true;
+    },
+    retryLoading () {
+      window.location.reload();
+    },
     hideLoadingScreen () {
+      window.clearTimeout(this.loadingTimer);
+      this.loadingError = false;
       this.loading = false;
     },
     checkForBannedUser (error) {
