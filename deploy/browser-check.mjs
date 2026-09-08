@@ -59,11 +59,35 @@ try {
   ]);
   assert.equal(registration.status(), 201);
   await page.waitForURL(`${origin}/habitica/`);
+  await page.locator('.user-tasks-page').waitFor({ state: 'visible', timeout: 30000 });
   await page.locator('#loading-screen-inapp').waitFor({ state: 'hidden', timeout: 30000 });
   console.log('PASS: browser registration reaches authenticated application');
   await page.reload();
+  await page.locator('.user-tasks-page').waitFor({ state: 'visible', timeout: 30000 });
   await page.locator('#loading-screen-inapp').waitFor({ state: 'hidden', timeout: 30000 });
   console.log('PASS: authenticated refresh');
+  await page.route('**/habitica/api/v4/user', route => route.abort());
+  await page.reload();
+  await page.locator('.loading-error').waitFor({ state: 'visible', timeout: 10000 });
+  await page.unroute('**/habitica/api/v4/user');
+  await page.locator('.loading-error button').click();
+  await page.locator('.user-tasks-page').waitFor({ state: 'visible', timeout: 30000 });
+  await page.locator('#loading-screen-inapp').waitFor({ state: 'hidden' });
+  console.log('PASS: failed user fetch displays retry and retains the session');
+  // This browser owns only the disposable CI account created above.
+  await page.evaluate(() => localStorage.removeItem('habit-mobile-settings'));
+  await page.goto(`${origin}/habitica/login`);
+  await page.locator('#usernameInput').fill(username);
+  await page.locator('#passwordInput').fill('isolated-fixture-password');
+  const [validLogin] = await Promise.all([
+    page.waitForResponse(res => res.url().includes('/user/auth/local/login')),
+    page.locator('#login-form button[type=submit]').click(),
+  ]);
+  assert.equal(validLogin.status(), 200);
+  await page.waitForURL(`${origin}/habitica/`);
+  await page.locator('.user-tasks-page').waitFor({ state: 'visible', timeout: 30000 });
+  await page.locator('#loading-screen-inapp').waitFor({ state: 'hidden' });
+  console.log('PASS: existing account signs in and renders tasks');
   assert.deepEqual(badPaths, [], 'All same-origin resources and API calls must stay inside the prefix');
   assert.deepEqual(errors, [], 'No browser JavaScript errors');
   console.log('PASS: browser boot, login/register deep links, prefixed Axios login and resources');
