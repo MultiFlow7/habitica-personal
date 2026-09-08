@@ -19,7 +19,7 @@ const TOP_LEVEL_ROUTES = [
 ];
 
 export default function NotFoundMiddleware (req, res, next) {
-  const reqUrl = req.originalUrl;
+  const reqUrl = req.path;
 
   const isExistingRoute = TOP_LEVEL_ROUTES.find(routeRoot => {
     if (reqUrl.lastIndexOf(routeRoot, 0) === 0) return true; // starts with

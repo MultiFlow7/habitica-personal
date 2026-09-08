@@ -21,6 +21,7 @@
 </style>
 
 <script>
+import { appUrl } from '@/libs/basePath';
 
 export default {
   async mounted () {
@@ -34,13 +35,13 @@ export default {
     const response = await this.$store.dispatch('auth:appleAuth', reqParams);
     if (response.id) {
       window.sessionStorage.removeItem('apple-token');
-      window.location.href = '/';
+      window.location.href = appUrl('/');
     } else {
       window.sessionStorage.setItem('apple-token', response.idToken);
       if (response.email) {
         window.sessionStorage.setItem('apple-email', response.email);
       }
-      window.location.href = '/username';
+      window.location.href = appUrl('/username');
     }
   },
 };

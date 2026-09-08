@@ -31,7 +31,7 @@
             v-once
             id="petLikeToEatMarket"
             class="drawer-help-text"
-            href="/static/faq#pet-foods"
+            :href="appUrl('/static/faq#pet-foods')"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -66,6 +66,7 @@
 </template>
 
 <script>
+import { appUrl } from '@/libs/basePath';
 import _filter from 'lodash/filter';
 import { mapState } from '@/libs/store';
 import inventoryUtils from '@/mixins/inventoryUtils';
@@ -116,7 +117,7 @@ export default {
       ],
       selectedDrawerTab: this.defaultSelectedTab,
       eatLinks: {
-        linkOpen: '<a href="/static/faq#pet-foods" target="_blank" rel="noreferrer noopener">',
+        linkOpen: `<a href="${appUrl('/static/faq#pet-foods')}" target="_blank" rel="noreferrer noopener">`,
         linkClose: '</a>',
       },
     };

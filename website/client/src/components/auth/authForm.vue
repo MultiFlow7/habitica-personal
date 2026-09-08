@@ -217,6 +217,7 @@
 </style>
 
 <script>
+import { appUrl } from '@/libs/basePath';
 import hello from 'hellojs';
 import debounce from 'lodash/debounce';
 import isEmail from 'validator/es/lib/isEmail';
@@ -314,7 +315,7 @@ export default {
         } catch (e) {} // eslint-disable-line
 
         try {
-          const redirectUrl = `${window.location.protocol}//${window.location.host}`;
+          const redirectUrl = `${window.location.origin}${appUrl('/')}`;
           const auth = await hello(network).login({
             scope: 'email',
             redirect_uri: redirectUrl, // eslint-disable-line camelcase

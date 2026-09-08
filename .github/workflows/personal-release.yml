@@ -35,9 +35,16 @@ jobs:
           echo "HABITICA_IMAGE=habitica-personal:$GITHUB_SHA" > deploy/.env
           docker compose -f deploy/compose.yml up -d --wait --wait-timeout 240
       - name: Verify application and database
-        run: docker compose -f deploy/compose.yml exec -T app node deploy/smoke.mjs
+        run: |
+          docker compose -f deploy/compose.yml exec -T app node deploy/check.mjs
+          docker compose -f deploy/compose.yml exec -T -e ALLOW_ISOLATED_SMOKE=true app node deploy/smoke.mjs
       - name: Verify agent CLI against isolated API
         run: python3 cli/test_live.py
+      - name: Verify browser under application subpath
+        run: |
+          npm install --prefix work/browser --no-package-lock --no-audit --no-fund playwright@1.55.0
+          ./work/browser/node_modules/.bin/playwright install --with-deps chromium
+          node deploy/browser-check.mjs
       - name: Export fixed release artifact
         if: github.event_name != 'pull_request'
         run: |

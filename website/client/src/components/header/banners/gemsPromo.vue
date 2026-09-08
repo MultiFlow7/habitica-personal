@@ -40,11 +40,11 @@ $types: ('seasonal', 'spooky');
   @each $side in $sides {
     .confetti-#{$side}-#{$type} {
       height: 48px;
-      background-image: url('/static/gems/confetti-#{$side}/#{$type}-confetti-#{$side}.png');
+      background-image: url('#{$app-base-path}/static/gems/confetti-#{$side}/#{$type}-confetti-#{$side}.png');
       background-image: image-set(
-        url('/static/gems/confetti-#{$side}/#{$type}-confetti-#{$side}.png') 1x,
-        url('/static/gems/confetti-#{$side}/#{$type}-confetti-#{$side}@2x.png') 2x,
-        url('/static/gems/confetti-#{$side}/#{$type}-confetti-#{$side}@3x.png') 3x,
+        url('#{$app-base-path}/static/gems/confetti-#{$side}/#{$type}-confetti-#{$side}.png') 1x,
+        url('#{$app-base-path}/static/gems/confetti-#{$side}/#{$type}-confetti-#{$side}@2x.png') 2x,
+        url('#{$app-base-path}/static/gems/confetti-#{$side}/#{$type}-confetti-#{$side}@3x.png') 3x,
       );
       background-repeat: repeat-x;
     }
@@ -82,6 +82,7 @@ $types: ('seasonal', 'spooky');
 </style>
 
 <script>
+import { appUrl, appSrcset } from '@/libs/basePath';
 import find from 'lodash/find';
 import { mapState } from '@/libs/store';
 import BaseBanner from './base';
@@ -119,10 +120,10 @@ export default {
     },
     textAssets () {
       return {
-        src: `/static/gems/text/${this.gemsPromoSeason}-text.png`,
-        srcSet: `/static/gems/text/${this.gemsPromoSeason}-text.png,
+        src: appUrl(`/static/gems/text/${this.gemsPromoSeason}-text.png`),
+        srcSet: appSrcset(`/static/gems/text/${this.gemsPromoSeason}-text.png,
           /static/gems/text/${this.gemsPromoSeason}-text@2x.png 2x,
-          /static/gems/text/${this.gemsPromoSeason}-text@3x.png 3x`,
+          /static/gems/text/${this.gemsPromoSeason}-text@3x.png 3x`),
       };
     },
   },

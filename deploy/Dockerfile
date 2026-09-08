@@ -11,7 +11,7 @@ ENV GIT_CONFIG_COUNT=2 \
 COPY . .
 RUN python3 deploy/configure.py --output config.json && npm ci --no-audit --no-fund
 RUN NODE_ENV=test npm run test:common
-RUN npm run client:build
+RUN APP_BASE_PATH=/habitica/ npm run client:build
 RUN NODE_ENV=production ./node_modules/.bin/gulp build:prod
 RUN npm prune --omit=dev --ignore-scripts --no-audit --no-fund
 
@@ -29,6 +29,7 @@ COPY --from=build --chown=node:node /app/website/client/dist ./website/client/di
 COPY --from=build --chown=node:node /app/content_cache ./content_cache
 COPY --from=build --chown=node:node /app/i18n_cache ./i18n_cache
 COPY --chown=node:node deploy/smoke.mjs ./deploy/smoke.mjs
+COPY --chown=node:node deploy/check.mjs ./deploy/check.mjs
 USER node
 EXPOSE 3000
 CMD ["node", "website/transpiled-babel/index.js"]

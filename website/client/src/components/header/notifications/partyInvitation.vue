@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import { appUrl } from '@/libs/basePath';
 import BaseNotification from './base';
 import { mapState } from '@/libs/store';
 import sync from '@/mixins/sync';
@@ -59,7 +60,7 @@ export default {
     invitationInfo () {
       if (this.notification?.data) {
         return {
-          usernameLink: `<a href="/profile/${this.notification.data.inviter}" target="_blank" rel="noreferrer noopener">@${this.invitingUser.auth ? this.invitingUser.auth.local.username : null}</a>`,
+          usernameLink: `<a href="${appUrl(`/profile/${this.notification.data.inviter}`)}" target="_blank" rel="noreferrer noopener">@${this.invitingUser.auth ? this.invitingUser.auth.local.username : null}</a>`,
           partyName: `<span class="notification-bold">${this.notification.data.name}</span>`,
         };
       }

@@ -72,6 +72,7 @@
 </style>
 
 <script>
+import { appUrl } from '@/libs/basePath';
 import axios from 'axios';
 import percent from '@/../../common/script/libs/percent';
 import { MAX_HEALTH as maxHealth } from '@/../../common/script/constants';
@@ -87,7 +88,7 @@ export default {
     return {
       maxHealth,
       tipLinks: {
-        linkOpen: '<a href="/static/faq#prevent-damage" target="_blank" rel="noreferrer noopener">',
+        linkOpen: `<a href="${appUrl('/static/faq#prevent-damage')}" target="_blank" rel="noreferrer noopener">`,
         linkClose: '</a>',
       },
     };

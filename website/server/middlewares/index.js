@@ -36,6 +36,7 @@ import {
   logSlowRequests,
 } from './requestLogHandler';
 import sitemap from './sitemap';
+import basePath from './basePath';
 
 const IS_PROD = nconf.get('IS_PROD');
 const DISABLE_LOGGING = nconf.get('DISABLE_REQUEST_LOGGING') === 'true';
@@ -51,6 +52,7 @@ const TEN_YEARS = 1000 * 60 * 60 * 24 * 365 * 10;
 
 export default function attachMiddlewares (app, server) {
   setupExpress(app);
+  app.use(basePath);
 
   if (LOG_REQUESTS_EXCESSIVE_MODE) {
     app.use(logRequestData);
@@ -116,6 +118,7 @@ export default function attachMiddlewares (app, server) {
     name: 'connect:sess', // Used to keep backward compatibility with Express 3 cookies
     secret: SESSION_SECRET,
     httpOnly: true, // so cookies are not accessible with browser JS
+    path: nconf.get('APP_BASE_PATH') || '/',
     // TODO what about https only (secure) ?
     maxAge: TEN_YEARS,
   }));

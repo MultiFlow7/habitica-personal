@@ -29,11 +29,12 @@
 </template>
 
 <script>
+import { appUrl } from '@/libs/basePath';
 export default {
   data () {
     return {
       localStorageTryFirst: {
-        linkStart: '<a href="/user/settings/siteData" target="_blank" rel="noopener noreferrer">',
+        linkStart: `<a href="${appUrl('/user/settings/siteData')}" target="_blank" rel="noopener noreferrer">`,
         linkEnd: '</a>',
       },
       localStorageTryNext: {

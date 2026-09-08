@@ -3,7 +3,10 @@ import { randomBytes } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import mongoose from 'mongoose';
 
-const base = process.env.SMOKE_URL || 'http://127.0.0.1:3000';
+if (process.env.ALLOW_ISOLATED_SMOKE !== 'true') {
+  throw new Error('Full smoke tests require an explicitly isolated test database.');
+}
+const base = process.env.SMOKE_URL || 'http://127.0.0.1:3000/habitica';
 const headers = { 'content-type': 'application/json', 'x-client': 'habitica-personal-smoke' };
 // Habitica usernames are limited to 20 characters.
 const username = `smk_${randomBytes(8).toString('hex')}`;
@@ -23,9 +26,9 @@ try {
   assert.equal(page.status, 200);
   const html = await page.text();
   assert.match(html, /<html/i);
-  const asset = html.match(/src="(\/assets\/[^" ]+\.js)"/);
+  const asset = html.match(/src="(\/habitica\/assets\/[^" ]+\.js)"/);
   assert.ok(asset, 'Built frontend entry must be present');
-  assert.equal((await fetch(base + asset[1])).status, 200);
+  assert.equal((await fetch(new URL(asset[1], base))).status, 200);
   const user = await api('POST', '/user/auth/local/register', {
     username, email: `${username}@example.com`, password, confirmPassword: password,
   });

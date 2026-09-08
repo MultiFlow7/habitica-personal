@@ -1,3 +1,4 @@
+import { appUrl } from '@/libs/basePath';
 import axios from 'axios';
 import moment from 'moment';
 
@@ -33,6 +34,6 @@ export function setUpAxios (AUTH_SETTINGS) { // eslint-disable-line import/prefe
 }
 
 export function buildAppleAuthUrl () {
-  const redirectUrl = encodeURIComponent(`${window.location.protocol}//${window.location.host}/api/v4/user/auth/apple`);
+  const redirectUrl = encodeURIComponent(`${window.location.protocol}//${window.location.host}${appUrl('/api/v4/user/auth/apple')}`);
   return `https://appleid.apple.com/auth/authorize?response_mode=form_post&scope=name%20email&response_type=code&version=2&redirect_uri=${redirectUrl}&client_id=${import.meta.env.APPLE_AUTH_CLIENT_ID}`;
 }

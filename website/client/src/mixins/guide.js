@@ -1,3 +1,4 @@
+import { appUrl } from '@/libs/basePath';
 import times from 'lodash/times';
 import introjs from 'intro.js';
 
@@ -11,7 +12,7 @@ export default {
       chapters: {},
       loaded: false,
       partyLinks: {
-        linkOpen: '<a href="/static/faq#parties">',
+        linkOpen: `<a href="${appUrl('/static/faq#parties')}">`,
         linkClose: '</a>',
       },
     };

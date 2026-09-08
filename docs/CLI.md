@@ -40,7 +40,7 @@
 可用环境变量：`HABITICA_CONFIG`、`HABITICA_URL`、`HABITICA_USER_ID`、`HABITICA_API_TOKEN`。
 使用环境凭据时，必须同时提供 URL、User ID、API Token，且覆盖文件中的凭据；只存在于进程环境，不会自动保存。
 不要在 shell 历史中写真实 Token。优先使用已登录的本地配置或密码管理器提供环境。
-保存的凭据绑定具体服务器 origin；换 URL 必须显式重新登录。公网只允许 HTTPS；SSH 隧道使用 loopback HTTP。
+保存的凭据绑定具体服务器 origin 和应用子路径；换 URL 必须显式重新登录。公网只允许 HTTPS；SSH 隧道使用 loopback HTTP。
 CLI 不跟随 HTTP 重定向，防止凭据意外转发。
 
 ## Agent 输出约定
@@ -62,7 +62,7 @@ CLI 不跟随 HTTP 重定向，防止凭据意外转发。
 | --- | --- |
 | 0 | 成功 |
 | 2 | 参数或配置错误 |
-| 3 | 未登录、凭据失效或 origin 不匹配 |
+| 3 | 未登录、凭据失效或服务器地址不匹配 |
 | 4 | 找不到对象 |
 | 5 | 连接失败或超时 |
 | 6 | API 错误、限流、异常响应或被拒绝的重定向 |
@@ -145,3 +145,6 @@ GitHub Actions 在独立临时数据库上执行 `cli/test_live.py`，验证真�
 
 此版本覆盖个人任务工作流，不包含支付、订阅、管理后台、队伍/副本管理、离线同步或删除账号。
 无需升级当前服务器；CLI 调用已经存在的 API。
+
+支持 HTTPS 子路径，例如 `./habitica --url https://www.example.com/habitica status`。
+切换至域名后需在终端重新登录；不会把隧道地址的凭据自动发送给新地址。

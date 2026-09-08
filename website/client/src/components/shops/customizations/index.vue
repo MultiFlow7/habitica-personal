@@ -133,6 +133,7 @@
 </style>
 
 <script>
+import { appUrl } from '@/libs/basePath';
 import find from 'lodash/find';
 import shops from '@/../../common/script/libs/shops';
 import throttle from 'lodash/throttle';
@@ -181,13 +182,13 @@ export default {
       const currentEvent = find(this.currentEventList, event => Boolean(event.season));
       if (!currentEvent) {
         return {
-          background: 'url(/static/npc/normal/customizations_background.png)',
-          npc: 'url(/static/npc/normal/customizations_npc.png)',
+          background: `url(${appUrl('/static/npc/normal/customizations_background.png')})`,
+          npc: `url(${appUrl('/static/npc/normal/customizations_npc.png')})`,
         };
       }
       return {
-        background: `url(/static/npc/${currentEvent.season}/customizations_background.png)`,
-        npc: `url(/static/npc/${currentEvent.season}/customizations_npc.png)`,
+        background: `url(${appUrl(`/static/npc/${currentEvent.season}/customizations_background.png`)})`,
+        npc: `url(${appUrl(`/static/npc/${currentEvent.season}/customizations_npc.png`)})`,
       };
     },
     categories () {

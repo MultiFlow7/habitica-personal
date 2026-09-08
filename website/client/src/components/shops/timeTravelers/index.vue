@@ -186,6 +186,7 @@
 </style>
 
 <script>
+import { appUrl } from '@/libs/basePath';
 import _filter from 'lodash/filter';
 import _sortBy from 'lodash/sortBy';
 import _throttle from 'lodash/throttle';
@@ -245,7 +246,7 @@ export default {
         npc: '',
       },
       equipmentLinks: {
-        linkOpen: '<a href="/inventory/equipment">',
+        linkOpen: `<a href="${appUrl('/inventory/equipment')}">`,
         linkClose: '</a>',
       },
     };
@@ -332,10 +333,10 @@ export default {
     });
     this.currentEvent = _find(this.currentEventList, event => Boolean(['winter', 'spring', 'summer', 'fall'].includes(event.season)));
     if (!this.currentEvent || !this.currentEvent.season || this.currentEvent.season === 'thanksgiving') {
-      this.imageURLs.background = 'url(/static/npc/normal/time_travelers_background.png)';
+      this.imageURLs.background = `url(${appUrl('/static/npc/normal/time_travelers_background.png')})`;
     } else {
-      this.imageURLs.background = `url(/static/npc/${this.currentEvent.season}/time_travelers_background.png)`;
-      this.imageURLs.npc = `url(/static/npc/${this.currentEvent.season}/time_travelers_open_banner.png)`;
+      this.imageURLs.background = `url(${appUrl(`/static/npc/${this.currentEvent.season}/time_travelers_background.png`)})`;
+      this.imageURLs.npc = `url(${appUrl(`/static/npc/${this.currentEvent.season}/time_travelers_open_banner.png`)})`;
     }
   },
   beforeDestroy () {

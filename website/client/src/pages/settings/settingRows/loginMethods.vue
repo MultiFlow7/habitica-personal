@@ -43,6 +43,7 @@
 </template>
 
 <script>
+import { appUrl } from '@/libs/basePath';
 import axios from 'axios';
 import hello from 'hellojs';
 import { SUPPORTED_SOCIAL_NETWORKS } from '@/../../common/script/constants';
@@ -110,7 +111,7 @@ export default {
         await this.$store.dispatch('auth:socialAuth', {
           auth,
         });
-        window.location.href = '/';
+        window.location.href = appUrl('/');
       }
     },
     hasBackupAuthOption (networkKeyToCheck) {

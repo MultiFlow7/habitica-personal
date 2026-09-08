@@ -106,6 +106,7 @@
 </style>
 
 <script>
+import { appUrl } from '@/libs/basePath';
 import axios from 'axios';
 import { mapState } from '@/libs/store';
 
@@ -144,7 +145,7 @@ export default {
           },
         });
         localStorage.clear();
-        window.location.href = '/static/home';
+        window.location.href = appUrl('/static/home');
       });
     },
   },

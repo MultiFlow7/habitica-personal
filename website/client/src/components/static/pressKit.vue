@@ -5,7 +5,7 @@
     <p>
       <a
         class="btn btn-lg btn-success"
-        href="/static/presskit/presskit.zip"
+        :href="appUrl('/static/presskit/presskit.zip')"
       >presskit.zip</a>
     </p>
     <div
@@ -20,7 +20,7 @@
         >
           <img
             class="img-fluid img-rendering-auto press-img"
-            :src="`/static/presskit/${category}/${img}`"
+            :src="appUrl(`/static/presskit/${category}/${img}`)"
           >
         </div>
       </div>
@@ -36,7 +36,7 @@
           >
             <img
               class="img-fluid img-rendering-auto press-img"
-              :src="`/static/presskit/${category}/${secondaryCategory}/${img}`"
+              :src="appUrl(`/static/presskit/${category}/${secondaryCategory}/${img}`)"
             >
           </div>
         </div>

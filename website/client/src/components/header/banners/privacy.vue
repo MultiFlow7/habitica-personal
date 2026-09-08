@@ -71,6 +71,7 @@
 </style>
 
 <script>
+import { appUrl } from '@/libs/basePath';
 import { nextTick } from 'vue';
 import { GenericUserPreferencesMixin } from '@/pages/settings/components/genericUserPreferencesMixin';
 import { EVENTS } from '@/libs/events';
@@ -90,7 +91,7 @@ export default {
     return {
       hidden: false,
       learnLinks: {
-        linkOpen: '<a href="/static/privacy" target="_blank" rel="noreferrer noopener">',
+        linkOpen: `<a href="${appUrl('/static/privacy')}" target="_blank" rel="noreferrer noopener">`,
         linkClose: '</a>',
       },
     };

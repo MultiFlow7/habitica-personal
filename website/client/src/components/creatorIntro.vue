@@ -945,6 +945,7 @@
 </style>
 
 <script>
+import { appUrl } from '@/libs/basePath';
 import axios from 'axios';
 import forEach from 'lodash/forEach';
 import content from '@/../../common/script/content/index';
@@ -1034,7 +1035,7 @@ export default {
       return this.$store.state.avatarEditorOptions.startingPage;
     },
     imageURL () {
-      return 'url(/static/npc/normal/npc_justin.png)';
+      return `url(${appUrl('/static/npc/normal/npc_justin.png')})`;
     },
   },
   watch: {

@@ -335,6 +335,7 @@
 </style>
 
 <script>
+import { appUrl } from '@/libs/basePath';
 import tier1 from '@/assets/svg/tier-1.svg?raw';
 import tier2 from '@/assets/svg/tier-2.svg?raw';
 import tier3 from '@/assets/svg/tier-3.svg?raw';
@@ -363,9 +364,9 @@ export default {
         tierStaff,
       }),
       imageURLs: {
-        background: 'url(/static/npc/normal/tavern_background.png)',
-        npc: 'url(/static/npc/normal/tavern_npc.png)',
-        pixel_border: 'url(/static/npc/normal/pixel_border.png)',
+        background: `url(${appUrl('/static/npc/normal/tavern_background.png')})`,
+        npc: `url(${appUrl('/static/npc/normal/tavern_npc.png')})`,
+        pixel_border: `url(${appUrl('/static/npc/normal/pixel_border.png')})`,
       },
       staff: staffList,
       adminEmail: '<a href="mailto:admin@habitica.com">admin@habitica.com</a>',

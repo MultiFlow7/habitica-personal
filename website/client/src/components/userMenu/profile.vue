@@ -986,6 +986,7 @@
 
 // eslint-disable-next-line vue/component-tags-order
 <script>
+import { appUrl } from '@/libs/basePath';
 import moment from 'moment';
 import axios from 'axios';
 import each from 'lodash/each';
@@ -1249,7 +1250,7 @@ export default {
       if (page !== 'profile') {
         newPath += `#${page}`;
       }
-      window.history.replaceState(null, null, newPath);
+      window.history.replaceState(null, null, appUrl(newPath));
       this.$store.dispatch('common:setTitle', {
         section: this.$t('user'),
         subSection: this.$t(page),

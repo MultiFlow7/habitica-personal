@@ -170,7 +170,7 @@
       {{ $t('commGuideHeadingLinks') }}
     </h2>
     <ul>
-      <li><a href="/static/faq">{{ $t('faq') }}</a></li>
+      <li><a :href="appUrl('/static/faq')">{{ $t('faq') }}</a></li>
       <li v-html="$t('commGuideLink03', gitHubLinks)"></li>
       <li v-html="$t('commGuideLink04', feedbackLinks)"></li>
     </ul>

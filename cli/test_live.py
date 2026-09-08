@@ -9,7 +9,7 @@ import tempfile
 from urllib import request
 
 ROOT = Path(__file__).resolve().parents[1]
-URL = 'http://127.0.0.1:8317'
+URL = 'http://127.0.0.1:8317/habitica'
 
 
 def main():

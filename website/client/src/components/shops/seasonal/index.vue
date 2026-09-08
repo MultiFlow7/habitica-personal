@@ -327,6 +327,7 @@
 </style>
 
 <script>
+import { appUrl } from '@/libs/basePath';
 import _filter from 'lodash/filter';
 import _map from 'lodash/map';
 import _mapValues from 'lodash/mapValues';
@@ -499,11 +500,11 @@ export default {
     await this.triggerGetWorldState();
     this.currentEvent = _find(this.currentEventList, event => Boolean(event.season));
     if (this.currentEvent.season === 'valentines') {
-      this.imageURLs.background = 'url(/static/npc/spring/seasonal_shop_opened_background.png)';
-      this.imageURLs.npc = 'url(/static/npc/spring/seasonal_shop_opened_npc.png)';
+      this.imageURLs.background = `url(${appUrl('/static/npc/spring/seasonal_shop_opened_background.png')})`;
+      this.imageURLs.npc = `url(${appUrl('/static/npc/spring/seasonal_shop_opened_npc.png')})`;
     } else {
-      this.imageURLs.background = `url(/static/npc/${this.currentEvent.season}/seasonal_shop_opened_background.png)`;
-      this.imageURLs.npc = `url(/static/npc/${this.currentEvent.season}/seasonal_shop_opened_npc.png)`;
+      this.imageURLs.background = `url(${appUrl(`/static/npc/${this.currentEvent.season}/seasonal_shop_opened_background.png`)})`;
+      this.imageURLs.npc = `url(${appUrl(`/static/npc/${this.currentEvent.season}/seasonal_shop_opened_npc.png`)})`;
     }
   },
   beforeDestroy () {

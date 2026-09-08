@@ -65,7 +65,7 @@
         {{ $t('savePreferences') }}
       </button>
       <a
-        href="/static/privacy"
+        :href="appUrl('/static/privacy')"
         target="_blank"
         rel="noopener noreferrer"
       >

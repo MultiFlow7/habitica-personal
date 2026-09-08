@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import axios from 'axios';
+import { basePath, appUrl, appSrcset } from './libs/basePath';
 import {
   ModalPlugin,
   DropdownPlugin,
@@ -17,6 +18,9 @@ import './filters/registerGlobals';
 import i18n from './libs/i18n';
 
 const IS_PRODUCTION = import.meta.env.NODE_ENV === 'production'; // eslint-disable-line no-process-env
+
+axios.defaults.baseURL = `${basePath}/`;
+Vue.mixin({ methods: { appUrl, appSrcset } });
 
 // Configure Vue global options, see https://vuejs.org/v2/api/#Global-Config
 

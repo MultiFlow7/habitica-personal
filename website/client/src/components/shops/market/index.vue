@@ -152,6 +152,7 @@
 </style>
 
 <script>
+import { appUrl } from '@/libs/basePath';
 import find from 'lodash/find';
 import _filter from 'lodash/filter';
 import _map from 'lodash/map';
@@ -305,13 +306,13 @@ export default {
       const currentEvent = find(this.currentEventList, event => Boolean(event.season));
       if (!currentEvent) {
         return {
-          background: 'url(/static/npc/normal/market_background.png)',
-          npc: 'url(/static/npc/normal/market_banner_npc.png)',
+          background: `url(${appUrl('/static/npc/normal/market_background.png')})`,
+          npc: `url(${appUrl('/static/npc/normal/market_banner_npc.png')})`,
         };
       }
       return {
-        background: `url(/static/npc/${currentEvent.season}/market_background.png)`,
-        npc: `url(/static/npc/${currentEvent.season}/market_banner_npc.png)`,
+        background: `url(${appUrl(`/static/npc/${currentEvent.season}/market_background.png`)})`,
+        npc: `url(${appUrl(`/static/npc/${currentEvent.season}/market_banner_npc.png`)})`,
       };
     },
   },
