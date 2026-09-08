@@ -26,6 +26,8 @@ jobs:
           python3 scripts/privacy-check.py --history
       - name: Test agent CLI transport and privacy
         run: python3 cli/test_cli.py
+      - name: Check trusted domain parsing
+        run: node --test deploy/trusted-domains.test.mjs
       - name: Build and run shared game tests
         run: docker build --build-arg REVISION="$GITHUB_SHA" -f deploy/Dockerfile -t "habitica-personal:$GITHUB_SHA" .
       - name: Start isolated production fixture
