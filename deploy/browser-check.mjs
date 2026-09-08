@@ -24,7 +24,7 @@ try {
   await page.locator('#usernameInput').fill('nonexistent_ci_account');
   await page.locator('#passwordInput').fill('fixture-password');
   const response = page.waitForResponse(res => res.url().includes('/user/auth/local/login'));
-  await page.locator('#continue-button').click();
+  await page.locator('#login-form button[type=submit]').click();
   const login = await response;
   assert.equal(new URL(login.url()).pathname, '/habitica/api/v4/user/auth/local/login');
   assert.equal(login.status(), 401);
