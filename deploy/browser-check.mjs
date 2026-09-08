@@ -9,6 +9,15 @@ try {
   const badPaths = [];
   const errors = [];
   page.on('pageerror', error => { errors.push(error.message); console.error('Browser error:', error.message); });
+  page.on('console', message => {
+    if (message.type() === 'error') console.error('Browser console:', message.text().slice(0, 300));
+  });
+  page.on('request', req => {
+    if (req.method() === 'POST') console.log('Browser POST:', new URL(req.url()).pathname);
+  });
+  page.on('requestfailed', req => {
+    if (new URL(req.url()).origin === origin) console.error('Request failed:', new URL(req.url()).pathname, req.failure()?.errorText);
+  });
   await page.route('**/*', route => {
     const url = new URL(route.request().url());
     if (url.origin !== origin) return route.abort();
@@ -25,6 +34,10 @@ try {
   await page.locator('#passwordInput').fill('fixture-password');
   const response = page.waitForResponse(res => res.url().includes('/user/auth/local/login'));
   await page.locator('#login-form button[type=submit]').click();
+  console.log('Login form validity:', await page.locator('#login-form').evaluate(form => ({
+    valid: form.checkValidity(),
+    invalidInputs: [...form.querySelectorAll(':invalid')].map(el => el.id),
+  })));
   const login = await response;
   assert.equal(new URL(login.url()).pathname, '/habitica/api/v4/user/auth/local/login');
   assert.equal(login.status(), 401);
