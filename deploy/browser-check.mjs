@@ -32,7 +32,7 @@ try {
     if (await privacyChoice.isVisible()) await privacyChoice.click();
     assert.ok(new URL(page.url()).pathname.startsWith('/habitica/'));
   }
-  await page.locator('#usernameInput').fill('nonexistent_ci_account');
+  await page.locator('#usernameInput').fill('ci_missing_user');
   await page.locator('#passwordInput').fill('fixture-password');
   console.log('Login form validity:', await page.locator('#login-form').evaluate(form => ({
     valid: form.checkValidity(),
