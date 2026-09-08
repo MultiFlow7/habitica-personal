@@ -28,17 +28,20 @@ try {
     await page.goto(origin + path);
     console.log(`Checking browser route: ${path}`);
     await page.locator(path.endsWith('/register') ? '#emailInput' : '#usernameInput').waitFor();
+    const privacyChoice = page.locator('#privacy-banner .btn-secondary');
+    if (await privacyChoice.isVisible()) await privacyChoice.click();
     assert.ok(new URL(page.url()).pathname.startsWith('/habitica/'));
   }
   await page.locator('#usernameInput').fill('nonexistent_ci_account');
   await page.locator('#passwordInput').fill('fixture-password');
-  const response = page.waitForResponse(res => res.url().includes('/user/auth/local/login'));
-  await page.locator('#login-form button[type=submit]').click();
   console.log('Login form validity:', await page.locator('#login-form').evaluate(form => ({
     valid: form.checkValidity(),
     invalidInputs: [...form.querySelectorAll(':invalid')].map(el => el.id),
   })));
-  const login = await response;
+  const [login] = await Promise.all([
+    page.waitForResponse(res => res.url().includes('/user/auth/local/login')),
+    page.locator('#login-form button[type=submit]').click({ timeout: 10000 }),
+  ]);
   assert.equal(new URL(login.url()).pathname, '/habitica/api/v4/user/auth/local/login');
   assert.equal(login.status(), 401);
   assert.deepEqual(badPaths, [], 'All same-origin resources and API calls must stay inside the prefix');
