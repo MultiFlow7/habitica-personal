@@ -8,7 +8,7 @@ try {
   const page = await browser.newPage();
   const badPaths = [];
   const errors = [];
-  page.on('pageerror', error => errors.push(error.message));
+  page.on('pageerror', error => { errors.push(error.message); console.error('Browser error:', error.message); });
   await page.route('**/*', route => {
     const url = new URL(route.request().url());
     if (url.origin !== origin) return route.abort();
@@ -17,13 +17,14 @@ try {
   });
   for (const path of ['/habitica/login', '/habitica/register', '/habitica/login']) {
     await page.goto(origin + path);
-    await page.locator('#usernameInput').waitFor();
+    console.log(`Checking browser route: ${path}`);
+    await page.locator(path.endsWith('/register') ? '#emailInput' : '#usernameInput').waitFor();
     assert.ok(new URL(page.url()).pathname.startsWith('/habitica/'));
   }
   await page.locator('#usernameInput').fill('nonexistent_ci_account');
   await page.locator('#passwordInput').fill('fixture-password');
   const response = page.waitForResponse(res => res.url().includes('/user/auth/local/login'));
-  await page.locator('.form .btn-info').click();
+  await page.locator('#continue-button').click();
   const login = await response;
   assert.equal(new URL(login.url()).pathname, '/habitica/api/v4/user/auth/local/login');
   assert.equal(login.status(), 401);
